@@ -14,7 +14,7 @@
     </path>
 
     <path id="test.path">
-        <pathelement path="${run.path}" />
+        <path refid="run.path" />
         <fileset dir="${lib.dir}">
             <include name="**/*.jar" />
         </fileset>
@@ -44,14 +44,19 @@
         description="Remove all files from the build and dist directories" />
 
     <target name="compile" depends="clean-build" description="Compile all the things">
-        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="compile.path" />
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" />
     </target>
 
-    <target name="test" description="Run the unittest suite">
+    <target name="compile-tests" depends="compile" description="Compile the test classes">
+        <javac srcdir="${test.dir}" destdir="${build.dir}" classpathref="test.path" includeantruntime="false" />
+    </target>
+
+    <target name="test" depends="compile-tests" description="Run the unittest suite">
         <junit printsummary="yes">
             <classpath>
                 <path refid="test.path" />
             </classpath>
+            <formatter type="plain" usefile="false" />
             <batchtest fork="yes">
                 <fileset dir="${test.dir}" includes="**/*Test.java" />
             </batchtest>
