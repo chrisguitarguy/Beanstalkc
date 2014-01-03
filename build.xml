@@ -1,0 +1,73 @@
+<project name="Beanstalkc" basedir="." default="test" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <description>A java library for interacting with Beanstalkd</description>
+
+    <property name="build.dir" location="build" />
+    <property name="dist.dir" location="dist" />
+    <property name="src.dir" location="src" />
+    <property name="lib.dir" location="lib" />
+    <property name="test.dir" location="test" />
+    <property name="version" value="0.1" />
+
+    <path id="run.path">
+        <pathelement location="${build.dir}" />
+    </path>
+
+    <path id="test.path">
+        <pathelement path="${run.path}" />
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+
+    <target name="clean-build" description="Remove all files from the build directory">
+        <delete includeemptydirs="true">
+            <fileset dir="${build.dir}" excludes=".gitignore" />
+        </delete>
+    </target>
+
+    <target name="clean-dist" description="Remove all files from the dist directory">
+        <delete includeemptydirs="true">
+            <fileset dir="${dist.dir}" excludes=".gitignore" />
+        </delete>
+    </target>
+
+    <target name="clean-deps" description="Remove all files from the lib directory">
+        <delete includeemptydirs="true">
+            <fileset dir="${lib.dir}" excludes=".gitignore" />
+        </delete>
+    </target>
+
+    <target name="clean" 
+        depends="clean-build,clean-dist"
+        description="Remove all files from the build and dist directories" />
+
+    <target name="compile" depends="clean-build" description="Compile all the things">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="compile.path" />
+    </target>
+
+    <target name="test" description="Run the unittest suite">
+        <junit printsummary="yes">
+            <classpath>
+                <path refid="test.path" />
+            </classpath>
+            <batchtest fork="yes">
+                <fileset dir="${test.dir}" includes="**/*Test.java" />
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="jar" depends="compile,clean-dist" description="Create a jarfile">
+        <jar destfile="${dist.dir}/${name}-${version}.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Build-By" value="${user.name}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="deps" description="Retrieve dependencies with Ivy">
+        <ivy:retrieve />
+    </target>
+
+</project>
