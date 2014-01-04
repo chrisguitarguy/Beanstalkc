@@ -5,7 +5,10 @@
 package me.christopherdavis.beanstalkc.adapter;
 
 import java.net.Socket;
-import java.util.Scanner;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import me.christopherdavis.beanstalkc.Adapter;
 import me.christopherdavis.beanstalkc.Response;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
@@ -19,6 +22,9 @@ import me.christopherdavis.beanstalkc.exception.ConnectionException;
  */
 class SocketAdapter implements Adapter
 {
+    private static final char CR = '\r';
+    private static final char LF = '\n';
+
     private Socket sock;
 
     public SocketAdapter(Socket sock)
@@ -38,5 +44,36 @@ class SocketAdapter implements Adapter
     public Response execute(byte[] req) throws BeanstalkcException
     {
         return null;
+    }
+
+    private byte[] readLine(InputStream s) throws IOException
+    {
+        // XXX is any of this depend on endianness? Do I need to worry about that?!
+        int byt = 0;
+        boolean has_cr = false;
+        // would java.nio.ByteBuffer be better?!?!
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+
+        // Read until we encounter a CR, then mark has_cr = true, if the next
+        // character is a LF (\n) then we got a CRLF, and we can stop (we read
+        // an entire line)
+        while (-1 < (byt = s.read())) {
+            if (has_cr && LF == byt) {
+                break;
+            } else {
+                // we didn't get a linefeed, put the carriage return on the buffer, try again
+                buf.write('\r');
+                has_cr = false;
+            }
+
+            if (CR == byt) {
+                has_cr = true;
+                continue;
+            }
+
+            buf.write(byt);
+        }
+
+        return buf.toByteArray();
     }
 }
