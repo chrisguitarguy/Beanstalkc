@@ -12,5 +12,18 @@ package me.christopherdavis.beanstalkc;
  */
 public class BeanstalkcException extends Exception
 {
-    // noop
+    public BeanstalkcException(Throwable cause)
+    {
+        super(cause);
+    }
+
+    public BeanstalkcException(String msg, Throwable cause)
+    {
+        super(msg, cause);
+    }
+
+    public BeanstalkcException(String msg)
+    {
+        super(msg);
+    }
 }
