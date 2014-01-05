@@ -21,11 +21,11 @@ package me.christopherdavis.beanstalkc;
 public interface Adapter
 {
     /**
-     * Write a request to the server and read its response.
+     * Perform a command.
      *
      * @since   0.1
      * @param   req The request to send
      * @return  The response.
      */
-    public Response execute(byte[] req) throws BeanstalkcException;
+    public <T> T perform(Command<T> cmd) throws BeanstalkcException;
 }
