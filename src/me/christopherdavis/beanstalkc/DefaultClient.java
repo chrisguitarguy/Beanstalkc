@@ -4,6 +4,8 @@
 
 package me.christopherdavis.beanstalkc;
 
+import me.christopherdavis.beanstalkc.command.PutJobCommand;
+
 /**
  * The default implementation of Client.
  *
@@ -16,12 +18,19 @@ class DefaultClient implements Client
     private static final int DEFAULT_TTR = 60; // 1 minute
     private static final int DEFAULT_PRIORITY = 1024;
 
+    private Adapter adapter;
+
+    public DefaultClient(Adapter adapter) throws BeanstalkcException
+    {
+        this.adapter = adapter;
+    }
+
     /**
      * @see     Client#put
      */
     public Job put(int priority, int delay, int ttr, byte[] data) throws BeanstalkcException
     {
-        return null;
+        return this.adapter.perform(new PutJobCommand(priority, delay, ttr, data));
     }
 
     /**
@@ -29,7 +38,7 @@ class DefaultClient implements Client
      */
     public Job put(byte[] data) throws BeanstalkcException
     {
-        return null;
+        return put(DEFAULT_PRIORITY, DEFAULT_DELAY, DEFAULT_TTR, data);
     }
 
     /**
