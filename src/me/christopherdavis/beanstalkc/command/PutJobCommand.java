@@ -33,7 +33,12 @@ public class PutJobCommand extends AbstractCommand<Job>
         this.data = data;
     }
 
-    public Job doCommand(byte[] first_line, InputStream in, OutputStream out) throws BeanstalkcException
+    protected void sendRequest(OutputStream out) throws Exception
+    {
+
+    }
+
+    public Job readResponse(byte[] first_line, InputStream in) throws Exception
     {
         return null;
     }

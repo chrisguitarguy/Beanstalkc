@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import me.christopherdavis.beanstalkc.Command;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
+import me.christopherdavis.beanstalkc.exception.ServerErrorException;
 
 /**
  * An abstract base class for commands.
@@ -38,6 +39,12 @@ abstract class AbstractCommand<T> implements Command<T>
         byte[] first_line;
 
         try {
+            sendRequest(out);
+        } catch (Exception e) {
+            throw new BeanstalkcException(e.getMessage(), e);
+        }
+
+        try {
             first_line = readLine(in);
         } catch (IOException e) {
             throw new BeanstalkcException(e.getMessage(), e);
@@ -49,32 +56,42 @@ abstract class AbstractCommand<T> implements Command<T>
         }
 
         if (Arrays.equals(OUT_OF_MEMORY, first_word)) {
-
+            throw new ServerErrorException("The beanstalkd server is out of memory");
         } else if (Arrays.equals(INTERNAL_ERROR, first_word)) {
-
+            throw new ServerErrorException("There was an internal error in the beanstalkd server");
         } else if (Arrays.equals(BAD_FORMAT, first_word)) {
-
+            throw new ServerErrorException("The last sent command was inproperly formatted");
         } else if (Arrays.equals(UNKNOWN_COMMAND, first_word)) {
-
+            throw new ServerErrorException("Unknown command");
         }
 
-        return doCommand(first_line, in, out);
+        try {
+            return readResponse(first_line, in);
+        } catch (Exception e) {
+            throw new BeanstalkcException(e.getMessage(), e);
+        }
     }
 
     /**
-     * Actually run the command.
+     * Send the command's request to the server.
      *
-     * This is called from execute after the responses are check for global
-     * error codes.
+     * @since   0.1
+     * @param   OutputStream out
+     * @return  void
+     */
+    abstract protected void sendRequest(OutputStream out) throws Exception;
+
+    /**
+     * Read the commands response from the server -- the first line has already
+     * been read, but it's up to the command to read the second (if applicable).
      *
      * @since   0.1
      * @param   first The first line of the command, it's up to command to read
      *          the second line if it needs it.
      * @param   in The input stream
-     * @param   out The output stream
      * @return  T
      */
-    abstract protected T doCommand(byte[] first_line, InputStream in, OutputStream out) throws BeanstalkcException;
+    abstract protected T readResponse(byte[] first_line, InputStream in) throws Exception;
 
     protected byte[] readLine(InputStream s) throws IOException
     {
