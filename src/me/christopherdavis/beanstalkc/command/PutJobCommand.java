@@ -16,7 +16,7 @@ import me.christopherdavis.beanstalkc.BeanstalkcException;
  * @since   0.1
  * @author  Christopher Davis <http://christopherdavis.me>
  */
-public class PutJobCommand implements Command<Job>
+public class PutJobCommand extends AbstractCommand<Job>
 {
     private int priority;
     private int delay;
@@ -33,7 +33,7 @@ public class PutJobCommand implements Command<Job>
         this.data = data;
     }
 
-    public Job execute(InputStream in, OutputStream out) throws BeanstalkcException
+    public Job doCommand(byte[] first_line, InputStream in, OutputStream out) throws BeanstalkcException
     {
         return null;
     }
