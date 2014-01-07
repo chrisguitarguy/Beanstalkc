@@ -18,7 +18,7 @@ import me.christopherdavis.beanstalkc.exception.ConnectionException;
  * @since   0.1
  * @author  Christopher Davis <http://christopehrdavis.me>
  */
-class SocketAdapter implements Adapter
+public class SocketAdapter implements Adapter
 {
     private Socket sock;
 
@@ -40,6 +40,8 @@ class SocketAdapter implements Adapter
     {
         try {
             return cmd.execute(sock.getInputStream(), sock.getOutputStream());
+        } catch (BeanstalkcException e) {
+            throw e; // if it's already and BeanstalkcException, just rethrow
         } catch (Exception e) {
             throw new ConnectionException(e.getMessage(), e);
         }
