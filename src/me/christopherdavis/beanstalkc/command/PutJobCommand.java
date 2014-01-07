@@ -38,7 +38,7 @@ public class PutJobCommand extends AbstractCommand<Job>
 
     }
 
-    public Job readResponse(byte[] first_line, InputStream in) throws Exception
+    public Job readResponse(String[] first_line, InputStream in) throws Exception
     {
         return null;
     }

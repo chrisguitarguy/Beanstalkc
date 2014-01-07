@@ -25,18 +25,18 @@ abstract class AbstractCommand<T> implements Command<T>
     final private char LF = '\n';
 
     // is this the right way to do this?
-    final private byte[] OUT_OF_MEMORY = "OUT_OF_MEMORY".getBytes();
-    final private byte[] INTERNAL_ERROR = "INTERNAL_ERROR".getBytes();
-    final private byte[] BAD_FORMAT = "BAD_FORMAT".getBytes();
-    final private byte[] UNKNOWN_COMMAND = "UNKNOWN_COMMAND".getBytes();
+    final private String OUT_OF_MEMORY = "OUT_OF_MEMORY";
+    final private String INTERNAL_ERROR = "INTERNAL_ERROR";
+    final private String BAD_FORMAT = "BAD_FORMAT";
+    final private String UNKNOWN_COMMAND = "UNKNOWN_COMMAND";
 
     /**
      * @see     Command#execute
      */
     public T execute(InputStream in, OutputStream out) throws BeanstalkcException
     {
-        int space_pos;
-        byte[] first_line;
+        String first_line;
+        String[] first_line_arr;
 
         try {
             sendRequest(out);
@@ -45,28 +45,25 @@ abstract class AbstractCommand<T> implements Command<T>
         }
 
         try {
-            first_line = readLine(in);
+            first_line = Arrays.toString(readLine(in));
         } catch (IOException e) {
             throw new BeanstalkcException(e.getMessage(), e);
         }
 
-        byte[] first_word = first_line;
-        if ((space_pos = Arrays.asList(first_line).indexOf(' ')) > -1) {
-            first_word = Arrays.copyOfRange(first_line, 0, space_pos);
-        }
+        first_line_arr = first_line.split(" ");
 
-        if (Arrays.equals(OUT_OF_MEMORY, first_word)) {
+        if (OUT_OF_MEMORY == first_line_arr[0]) {
             throw new ServerErrorException("The beanstalkd server is out of memory");
-        } else if (Arrays.equals(INTERNAL_ERROR, first_word)) {
+        } else if (INTERNAL_ERROR == first_line_arr[0]) {
             throw new ServerErrorException("There was an internal error in the beanstalkd server");
-        } else if (Arrays.equals(BAD_FORMAT, first_word)) {
+        } else if (BAD_FORMAT ==  first_line_arr[0]) {
             throw new ServerErrorException("The last sent command was inproperly formatted");
-        } else if (Arrays.equals(UNKNOWN_COMMAND, first_word)) {
+        } else if (UNKNOWN_COMMAND ==  first_line_arr[0]) {
             throw new ServerErrorException("Unknown command");
         }
 
         try {
-            return readResponse(first_line, in);
+            return readResponse(first_line_arr, in);
         } catch (Exception e) {
             throw new BeanstalkcException(e.getMessage(), e);
         }
@@ -86,12 +83,12 @@ abstract class AbstractCommand<T> implements Command<T>
      * been read, but it's up to the command to read the second (if applicable).
      *
      * @since   0.1
-     * @param   first The first line of the command, it's up to command to read
+     * @param   first_line The first line of the command, it's up to command to read
      *          the second line if it needs it.
      * @param   in The input stream
      * @return  T
      */
-    abstract protected T readResponse(byte[] first_line, InputStream in) throws Exception;
+    abstract protected T readResponse(String[] first_line, InputStream in) throws Exception;
 
     protected byte[] readLine(InputStream s) throws IOException
     {
