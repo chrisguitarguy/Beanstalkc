@@ -5,6 +5,7 @@
 package me.christopherdavis.beanstalkc;
 
 import me.christopherdavis.beanstalkc.command.PutJobCommand;
+import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
 
 /**
  * The default implementation of Client.
@@ -12,7 +13,7 @@ import me.christopherdavis.beanstalkc.command.PutJobCommand;
  * @since   0.1
  * @author  Christopher Davis <http://christopherdavis.me>
  */
-class DefaultClient implements Client
+public class DefaultClient implements Client
 {
     private static final int DEFAULT_DELAY = 0;
     private static final int DEFAULT_TTR = 60; // 1 minute
