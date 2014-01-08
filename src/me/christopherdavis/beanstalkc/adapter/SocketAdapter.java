@@ -43,6 +43,7 @@ public class SocketAdapter implements Adapter
         } catch (BeanstalkcException e) {
             throw e; // if it's already and BeanstalkcException, just rethrow
         } catch (Exception e) {
+            // might happen from sock.get{Input,Output}Stream()
             throw new ConnectionException(e.getMessage(), e);
         }
     }
