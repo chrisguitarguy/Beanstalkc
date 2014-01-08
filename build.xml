@@ -52,7 +52,7 @@
     </target>
 
     <target name="test" depends="compile-tests" description="Run the unittest suite">
-        <junit printsummary="yes">
+        <junit printsummary="yes" showoutput="yes" maxmemory="512m" fork="true">
             <classpath>
                 <path refid="test.path" />
             </classpath>
