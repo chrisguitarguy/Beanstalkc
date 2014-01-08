@@ -53,7 +53,7 @@ public class PutJobCommand extends AbstractCommand<Job>
     {
         // all of the error responses are a single item
         if (first_line.length < 2) {
-            throw new ServerErrorException(first_line.length > 0 ? getErrorMessage(first_line[0]) : "Response was blank");
+            throw new ServerErrorException(getErrorMessage(first_line[0]));
         }
 
         int job_id = 0;
@@ -84,11 +84,11 @@ public class PutJobCommand extends AbstractCommand<Job>
     {
         String msg;
 
-        if ("EXPECTED_CRLF" == resp) {
+        if (resp.equals("EXPECTED_CRLF")) {
             msg = "PUT command must have a CRLF after the job body";
-        } else if ("JOB_TOO_BIG" == resp) {
+        } else if (resp.equals("JOB_TOO_BIG")) {
             msg = "The job body was larger the max-job-size bytes";
-        } else if ("DRAINING" == resp) {
+        } else if (resp.equals("DRAINING")) {
             msg = "Server is in \"Drain Mode\" and is no longer accepting new jobs";
         } else {
             msg = "Unknown error";
