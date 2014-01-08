@@ -27,11 +27,9 @@ public class PutJobCommand extends AbstractCommand<Job>
     private int ttr;
     private byte[] data;
 
-    public PutJobCommand(int priority, int delay, int ttr, byte[] data) throws BeanstalkcException
+    public PutJobCommand(int priority, int delay, int ttr, byte[] data)
     {
-        if (Validator.isValidPriority(priority)) {
-            this.priority = priority;
-        }
+        this.priority = priority;
         this.delay = delay;
         this.ttr = ttr;
         this.data = data;
