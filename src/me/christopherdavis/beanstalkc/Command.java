@@ -6,6 +6,7 @@ package me.christopherdavis.beanstalkc;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.IOException;
 
 /**
  * Represents a single interaction with the server.
@@ -22,7 +23,11 @@ public interface Command<T>
      * @since   0.1
      * @param   in The input stream
      * @param   out The output stream
+     * @throws  BeanstalkcException if some sort of error response was received
+     *          from the server or something happened in process
+     * @throws  IOException if something went wrong during the communication
+     *          with the server -- generally this is from the streams.
      * @return  A response type appropriate to the command
      */
-    public T execute(InputStream in, OutputStream out) throws BeanstalkcException;
+    public T execute(InputStream in, OutputStream out) throws BeanstalkcException, IOException;
 }
