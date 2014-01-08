@@ -42,16 +42,19 @@ abstract class AbstractCommand<T> implements Command<T>
         sendRequest(out);
         out.flush();
 
-        first_line = Arrays.toString(readLine(in));
+        first_line = new String(readLine(in));
+        if (first_line.length() < 1) {
+            throw new ServerErrorException("Received an empty response");
+        }
         first_line_arr = first_line.split(" ");
 
-        if (OUT_OF_MEMORY == first_line_arr[0]) {
+        if (first_line_arr[0].equals(OUT_OF_MEMORY)) {
             throw new ServerErrorException("The beanstalkd server is out of memory");
-        } else if (INTERNAL_ERROR == first_line_arr[0]) {
+        } else if (first_line_arr[0].equals(INTERNAL_ERROR)) {
             throw new ServerErrorException("There was an internal error in the beanstalkd server");
-        } else if (BAD_FORMAT ==  first_line_arr[0]) {
+        } else if (first_line_arr[0].equals(BAD_FORMAT)) {
             throw new ServerErrorException("The last sent command was inproperly formatted");
-        } else if (UNKNOWN_COMMAND ==  first_line_arr[0]) {
+        } else if (first_line_arr[0].equals(UNKNOWN_COMMAND)) {
             throw new ServerErrorException("Unknown command");
         }
 
@@ -90,13 +93,15 @@ abstract class AbstractCommand<T> implements Command<T>
         // Read until we encounter a CR, then mark has_cr = true, if the next
         // character is a LF (\n) then we got a CRLF, and we can stop (we read
         // an entire line)
-        while (-1 < (byt = s.read())) {
-            if (has_cr && LF == byt) {
-                break;
-            } else {
-                // we didn't get a linefeed, put the carriage return on the buffer, try again
-                buf.write('\r');
-                has_cr = false;
+        while ((byt = s.read()) > -1) {
+            if (has_cr) {
+                if (LF == byt) {
+                    break;
+                } else {
+                    // we didn't get a linefeed, put the carriage return on the buffer, try again
+                    buf.write('\r');
+                    has_cr = false;
+                }
             }
 
             if (CR == byt) {
