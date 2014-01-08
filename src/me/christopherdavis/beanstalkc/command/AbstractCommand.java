@@ -33,23 +33,16 @@ abstract class AbstractCommand<T> implements Command<T>
     /**
      * @see     Command#execute
      */
-    public T execute(InputStream in, OutputStream out) throws BeanstalkcException
+    @Override
+    public T execute(InputStream in, OutputStream out) throws BeanstalkcException, IOException
     {
         String first_line;
         String[] first_line_arr;
 
-        try {
-            sendRequest(out);
-        } catch (Exception e) {
-            throw new BeanstalkcException(e.getMessage(), e);
-        }
+        sendRequest(out);
+        out.flush();
 
-        try {
-            first_line = Arrays.toString(readLine(in));
-        } catch (IOException e) {
-            throw new BeanstalkcException(e.getMessage(), e);
-        }
-
+        first_line = Arrays.toString(readLine(in));
         first_line_arr = first_line.split(" ");
 
         if (OUT_OF_MEMORY == first_line_arr[0]) {
@@ -62,11 +55,7 @@ abstract class AbstractCommand<T> implements Command<T>
             throw new ServerErrorException("Unknown command");
         }
 
-        try {
-            return readResponse(first_line_arr, in);
-        } catch (Exception e) {
-            throw new BeanstalkcException(e.getMessage(), e);
-        }
+        return readResponse(first_line_arr, in);
     }
 
     /**
@@ -76,7 +65,7 @@ abstract class AbstractCommand<T> implements Command<T>
      * @param   OutputStream out
      * @return  void
      */
-    abstract protected void sendRequest(OutputStream out) throws Exception;
+    abstract protected void sendRequest(OutputStream out) throws BeanstalkcException, IOException;
 
     /**
      * Read the commands response from the server -- the first line has already
@@ -88,7 +77,7 @@ abstract class AbstractCommand<T> implements Command<T>
      * @param   in The input stream
      * @return  T
      */
-    abstract protected T readResponse(String[] first_line, InputStream in) throws Exception;
+    abstract protected T readResponse(String[] first_line, InputStream in) throws BeanstalkcException, IOException;
 
     protected byte[] readLine(InputStream s) throws IOException
     {
