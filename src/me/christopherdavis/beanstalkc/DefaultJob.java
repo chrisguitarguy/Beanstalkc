@@ -11,7 +11,7 @@ package me.christopherdavis.beanstalkc;
  * @author  Christopher Davis <http://christopherdavis.me>
  * @since   0.1
  */
-class DefaultJob implements Job
+public class DefaultJob implements Job
 {
     private int id;
     private byte[] data;
