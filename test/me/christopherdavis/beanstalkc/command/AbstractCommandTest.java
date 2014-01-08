@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Assert;
 import org.mockito.Mockito;
 import org.mockito.AdditionalAnswers;
@@ -86,6 +87,13 @@ public class AbstractCommandTest
     {
         in = Mockito.mock(InputStream.class);
         out = Mockito.mock(OutputStream.class);
+    }
+
+    @After
+    public void tearDown()
+    {
+        Mockito.reset(in);
+        Mockito.reset(out);
     }
 
     // stub class for tests here.
