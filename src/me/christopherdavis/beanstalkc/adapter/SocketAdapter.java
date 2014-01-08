@@ -7,6 +7,7 @@ package me.christopherdavis.beanstalkc.adapter;
 import java.net.Socket;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.IOException;
 import me.christopherdavis.beanstalkc.Adapter;
 import me.christopherdavis.beanstalkc.Command;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
@@ -40,10 +41,7 @@ public class SocketAdapter implements Adapter
     {
         try {
             return cmd.execute(sock.getInputStream(), sock.getOutputStream());
-        } catch (BeanstalkcException e) {
-            throw e; // if it's already and BeanstalkcException, just rethrow
-        } catch (Exception e) {
-            // might happen from sock.get{Input,Output}Stream()
+        } catch (IOException e) {
             throw new ConnectionException(e.getMessage(), e);
         }
     }
