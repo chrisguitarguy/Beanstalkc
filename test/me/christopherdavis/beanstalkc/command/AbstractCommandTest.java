@@ -7,8 +7,6 @@ package me.christopherdavis.beanstalkc.command;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.Assert;
@@ -26,7 +24,7 @@ public class AbstractCommandTest
     @Test(expected=BeanstalkcException.class)
     public void testWithEmptyResponse() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(byteCollection("\r\n")))
+        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("\r\n")))
                .when(in)
                .read();
         Command<Boolean> cmd = new Cmd();
@@ -36,7 +34,7 @@ public class AbstractCommandTest
     @Test(expected=BeanstalkcException.class)
     public void testWithOutOfMememoryError() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(byteCollection("OUT_OF_MEMORY\r\n")))
+        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("OUT_OF_MEMORY\r\n")))
                .when(in)
                .read();
         Command<Boolean> cmd = new Cmd();
@@ -46,7 +44,7 @@ public class AbstractCommandTest
     @Test(expected=BeanstalkcException.class)
     public void testWithInternalError() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(byteCollection("INTERNAL_ERROR\r\n")))
+        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("INTERNAL_ERROR\r\n")))
                .when(in)
                .read();
         Command<Boolean> cmd = new Cmd();
@@ -56,7 +54,7 @@ public class AbstractCommandTest
     @Test(expected=BeanstalkcException.class)
     public void testWithBadFormat() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(byteCollection("BAD_FORMAT\r\n")))
+        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("BAD_FORMAT\r\n")))
                .when(in)
                .read();
         Command<Boolean> cmd = new Cmd();
@@ -66,7 +64,7 @@ public class AbstractCommandTest
     @Test(expected=BeanstalkcException.class)
     public void testWithUnknownCommand() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(byteCollection("UNKNOWN_COMMAND\r\n")))
+        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("UNKNOWN_COMMAND\r\n")))
                .when(in)
                .read();
         Command<Boolean> cmd = new Cmd();
@@ -76,7 +74,7 @@ public class AbstractCommandTest
     @Test
     public void testWithOkayResponse() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(byteCollection("INSERTED 12\r\n")))
+        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("INSERTED 12\r\n")))
                .when(in)
                .read();
         Command<Boolean> cmd = new Cmd();
@@ -88,17 +86,6 @@ public class AbstractCommandTest
     {
         in = Mockito.mock(InputStream.class);
         out = Mockito.mock(OutputStream.class);
-    }
-
-    private List<Byte> byteCollection(String msg)
-    {
-        byte[] bytes = msg.getBytes();
-        List<Byte> lst = new ArrayList<Byte>();
-        for (byte b : bytes) {
-            lst.add(b);
-        }
-
-        return lst;
     }
 
     // stub class for tests here.
