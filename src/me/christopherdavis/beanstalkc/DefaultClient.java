@@ -31,7 +31,7 @@ public class DefaultClient implements Client
      */
     public Job put(int priority, int delay, int ttr, byte[] data) throws BeanstalkcException
     {
-        return this.adapter.perform(new PutJobCommand(priority, delay, ttr, data));
+        return doCommand(new PutJobCommand(priority, delay, ttr, data));
     }
 
     /**
@@ -179,5 +179,10 @@ public class DefaultClient implements Client
     public int ignore(String tube) throws BeanstalkcException
     {
         return 0;
+    }
+
+    private <T> T doCommand(Command<T> cmd) throws BeanstalkcException
+    {
+        return adapter.perform(cmd);
     }
 }
