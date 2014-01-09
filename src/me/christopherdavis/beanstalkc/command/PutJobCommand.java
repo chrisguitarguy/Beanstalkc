@@ -7,7 +7,6 @@ package me.christopherdavis.beanstalkc.command;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
-import me.christopherdavis.beanstalkc.Command;
 import me.christopherdavis.beanstalkc.Job;
 import me.christopherdavis.beanstalkc.DefaultJob;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
