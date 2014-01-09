@@ -6,6 +6,8 @@ package me.christopherdavis.beanstalkc.command;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.junit.Test;
 import org.junit.Before;
@@ -20,37 +22,81 @@ import me.christopherdavis.beanstalkc.Job;
 
 public class PutJobCommandTest
 {
-    private InputStream in;
-    private OutputStream out;
-    private PutJobCommand cmd;
     final private byte[] expected_first = "put 1 1 1 4\r\n".getBytes();
     final private byte[] expected_second = "test\r\n".getBytes();
 
     @Test(expected=BeanstalkcException.class)
     public void testErrorExpectedCrlf() throws BeanstalkcException, IOException
     {
-        Mockito.doAnswer(AdditionalAnswers.returnsElementsOf(TestHelper.byteCollection("EXPECTED_CRLF")))
-               .when(in)
-               .read();
-
+        InputStream in = new ByteArrayInputStream("EXPECTED_CRLF".getBytes());
+        OutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
         cmd.execute(in, out);
     }
 
-    @Before
-    public void setUp()
+    @Test(expected=BeanstalkcException.class)
+    public void testErrorJobTooBig() throws BeanstalkcException, IOException
     {
-        in = Mockito.mock(InputStream.class);
-        out = Mockito.mock(OutputStream.class);
-        cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        InputStream in = new ByteArrayInputStream("JOB_TOO_BIG".getBytes());
+        OutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        cmd.execute(in, out);
     }
 
-    @After
-    public void tearDown() throws IOException
+    @Test(expected=BeanstalkcException.class)
+    public void testErrorDraining() throws BeanstalkcException, IOException
     {
-        // we write on every test, so make sure it happens
-        Mockito.verify(out).write(AdditionalMatchers.aryEq(expected_first));
-        Mockito.verify(out).write(AdditionalMatchers.aryEq(expected_second));
-        Mockito.reset(in);
-        Mockito.reset(out);
+        InputStream in = new ByteArrayInputStream("DRAINING".getBytes());
+        OutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        cmd.execute(in, out);
+    }
+
+    @Test(expected=BeanstalkcException.class)
+    public void testErrorUnknown() throws BeanstalkcException, IOException
+    {
+        InputStream in = new ByteArrayInputStream("THIS_IS_AN_UNKNOWN_ERROR".getBytes());
+        OutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        cmd.execute(in, out);
+    }
+
+    @Test
+    public void testSuccessWithInserted() throws BeanstalkcException, IOException
+    {
+        InputStream in = new ByteArrayInputStream("INSERTED 12".getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        Job j = cmd.execute(in, out);
+
+        Assert.assertArrayEquals(
+            "put 1 1 1 4\r\ntest\r\n".getBytes(),
+            out.toByteArray()
+        );
+        Assert.assertEquals(12, j.getId());
+    }
+
+    @Test
+    public void testSuccessWithBuried() throws BeanstalkcException, IOException
+    {
+        InputStream in = new ByteArrayInputStream("BURIED 12".getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        Job j = cmd.execute(in, out);
+
+        Assert.assertArrayEquals(
+            "put 1 1 1 4\r\ntest\r\n".getBytes(),
+            out.toByteArray()
+        );
+        Assert.assertEquals(12, j.getId());
+    }
+
+    @Test(expected=BeanstalkcException.class)
+    public void testSuccessWithBadParse() throws BeanstalkcException, IOException
+    {
+        InputStream in = new ByteArrayInputStream("BURIED nopenopenope".getBytes());
+        OutputStream out = new ByteArrayOutputStream();
+        PutJobCommand cmd = new PutJobCommand(1, 1, 1, "test".getBytes());
+        cmd.execute(in, out);
     }
 }
