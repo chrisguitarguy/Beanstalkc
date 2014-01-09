@@ -4,8 +4,9 @@
 
 package me.christopherdavis.beanstalkc;
 
-import me.christopherdavis.beanstalkc.command.PutJobCommand;
 import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
+import me.christopherdavis.beanstalkc.command.PutJobCommand;
+import me.christopherdavis.beanstalkc.command.UseTubeCommand;
 
 /**
  * The default implementation of Client.
@@ -47,7 +48,7 @@ public class DefaultClient implements Client
      */
     public boolean use(String tube) throws BeanstalkcException
     {
-        return false;
+        return doCommand(new UseTubeCommand(tube));
     }
 
     /**
