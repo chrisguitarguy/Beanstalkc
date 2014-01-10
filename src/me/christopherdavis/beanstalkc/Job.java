@@ -27,7 +27,7 @@ public interface Job
     public int getId();
 
     /**
-     * Get the data of the job.
+     * Get the body (data) of the job.
      *
      * Data is an arbitrary string of bytes. Beanstalkd doesn't care what it is
      * and neither does this library.
@@ -35,5 +35,5 @@ public interface Job
      * @since   0.1
      * @return  The byte array of data
      */
-    public byte[] getData();
+    public byte[] getBody();
 }

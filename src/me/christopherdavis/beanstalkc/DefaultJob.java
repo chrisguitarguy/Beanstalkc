@@ -22,12 +22,20 @@ public class DefaultJob implements Job
         this.data = data;
     }
 
+    /**
+     * @see     Job#getId
+     */
+    @Override
     public int getId()
     {
         return id;
     }
 
-    public byte[] getData()
+    /**
+     * @see     Job#getBody
+     */
+    @Override
+    public byte[] getBody()
     {
         return data;
     }

@@ -23,7 +23,7 @@ public class DefaultJobTest
     }
 
     @Test
-    public void testGetData()
+    public void testGetBody()
     {
         final byte[] job_body = "job body".getBytes();
 
@@ -31,7 +31,7 @@ public class DefaultJobTest
         Assert.assertEquals(
             String.format("Job body should be equal to \"%s\"", new String(job_body)),
             job_body,
-            j.getData()
+            j.getBody()
         );
     }
 }
