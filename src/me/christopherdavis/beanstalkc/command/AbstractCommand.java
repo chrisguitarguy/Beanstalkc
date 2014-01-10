@@ -12,6 +12,7 @@ import java.util.Arrays;
 import me.christopherdavis.beanstalkc.Command;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.ServerErrorException;
+import me.christopherdavis.beanstalkc.exception.InvalidValueException;
 
 /**
  * An abstract base class for commands.
@@ -113,5 +114,18 @@ abstract class AbstractCommand<T> implements Command<T>
         }
 
         return buf.toByteArray();
+    }
+
+    protected int parseInt(String to_parse, String what) throws BeanstalkcException
+    {
+        try {
+            return Integer.parseInt(to_parse);
+        } catch (NumberFormatException e) {
+            throw new InvalidValueException(String.format(
+                "Could not parse %s integer: %s",
+                what,
+                e.getMessage()
+            ), e);
+        }
     }
 }

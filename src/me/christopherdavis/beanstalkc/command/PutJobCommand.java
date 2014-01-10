@@ -11,7 +11,6 @@ import me.christopherdavis.beanstalkc.Job;
 import me.christopherdavis.beanstalkc.DefaultJob;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.ServerErrorException;
-import me.christopherdavis.beanstalkc.exception.InvalidValueException;
 
 /**
  * Put a new job into the queue.
@@ -53,12 +52,7 @@ public class PutJobCommand extends AbstractCommand<Job>
             throw new ServerErrorException(getErrorMessage(first_line[0]));
         }
 
-        int job_id = 0;
-        try {
-            job_id = Integer.parseInt(first_line[1]);
-        } catch (NumberFormatException e) {
-            throw new InvalidValueException(String.format("Could not parseInt: %s", e.getMessage()), e);
-        }
+        int job_id = parseInt(first_line[1], "job ID");
 
         return new DefaultJob(job_id, data);
     }
