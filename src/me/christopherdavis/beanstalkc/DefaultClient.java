@@ -7,6 +7,8 @@ package me.christopherdavis.beanstalkc;
 import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
 import me.christopherdavis.beanstalkc.command.PutJobCommand;
 import me.christopherdavis.beanstalkc.command.UseTubeCommand;
+import me.christopherdavis.beanstalkc.command.ReserveCommand;
+import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
 
 /**
  * The default implementation of Client.
@@ -56,7 +58,7 @@ public class DefaultClient implements Client
      */
     public Job reserve() throws BeanstalkcException
     {
-        return null;
+        return doCommand(new ReserveCommand());
     }
 
     /**
@@ -64,7 +66,7 @@ public class DefaultClient implements Client
      */
     public Job reserve(int timeout) throws BeanstalkcException
     {
-        return null;
+        return doCommand(new ReserveTimeoutCommand(timeout));
     }
 
 
