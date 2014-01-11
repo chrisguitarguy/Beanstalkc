@@ -10,6 +10,7 @@ import me.christopherdavis.beanstalkc.command.UseTubeCommand;
 import me.christopherdavis.beanstalkc.command.ReserveCommand;
 import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
 import me.christopherdavis.beanstalkc.command.DeleteCommand;
+import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 
 /**
  * The default implementation of Client.
@@ -19,9 +20,9 @@ import me.christopherdavis.beanstalkc.command.DeleteCommand;
  */
 public class DefaultClient implements Client
 {
-    private static final int DEFAULT_DELAY = 0;
-    private static final int DEFAULT_TTR = 60; // 1 minute
-    private static final int DEFAULT_PRIORITY = 1024;
+    final private static int DEFAULT_DELAY = 0;
+    final private static int DEFAULT_TTR = 60; // 1 minute
+    final private static int DEFAULT_PRIORITY = 1024;
 
     private Adapter adapter;
 
@@ -93,7 +94,7 @@ public class DefaultClient implements Client
      */
     public boolean release(Job job, int priority, int delay) throws BeanstalkcException
     {
-        return false;
+        return release(job.getId(), priority, delay);
     }
 
     /**
@@ -101,7 +102,7 @@ public class DefaultClient implements Client
      */
     public boolean release(int job_id, int priority, int delay) throws BeanstalkcException
     {
-        return false;
+        return doCommand(new ReleaseCommand(job_id, priority, delay));
     }
 
     /**
@@ -109,7 +110,7 @@ public class DefaultClient implements Client
      */
     public boolean release(Job job) throws BeanstalkcException
     {
-        return false;
+        return release(job.getId(), DEFAULT_PRIORITY, DEFAULT_DELAY);
     }
 
     /**
@@ -117,7 +118,7 @@ public class DefaultClient implements Client
      */
     public boolean release(int job_id) throws BeanstalkcException
     {
-        return false;
+        return release(job_id, DEFAULT_PRIORITY, DEFAULT_DELAY);
     }
 
     /**
