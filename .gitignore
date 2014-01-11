@@ -1,6 +1,7 @@
 /build/*
 /dist/*
 /lib/*
+/build.properties
 
 # ignore certain files
 *.pyc

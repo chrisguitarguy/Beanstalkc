@@ -2,6 +2,7 @@
 
     <description>A java library for interacting with Beanstalkd</description>
 
+    <property file="build.properties" />
     <property name="build.dir" location="build" />
     <property name="build.dir.main" location="${build.dir}/main" />
     <property name="build.dir.test" location="${build.dir}/test" />
@@ -10,8 +11,11 @@
     <property name="lib.dir" location="lib" />
     <property name="test.dir" location="test" />
     <property name="test.dir.unit" location="${test.dir}/unit" />
+    <property name="test.dir.integration" location="${test.dir}/integration" />
     <property name="version" value="0.1" />
     <property name="name" value="beanstalkc" />
+    <property name="beanstalkd.host" value="localhost" />
+    <property name="beanstalkd.port" value="11300" />
 
     <path id="run.path">
         <pathelement location="${build.dir.main}" />
@@ -60,6 +64,29 @@
             <formatter type="plain" usefile="false" />
             <batchtest fork="yes">
                 <fileset dir="${test.dir.unit}" includes="**/*Test.java" />
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="compile-integration" description="Compile the integration test classes">
+        <mkdir dir="${build.dir.test}" />
+        <javac srcdir="${test.dir.integration}" destdir="${build.dir.test}" classpathref="test.path" includeantruntime="false" />
+    </target>
+
+    <target name="beanstalkd-running" description="Check to see if the beanstalkd server is running">
+        <condition property="beanstalkd.running">
+            <socket server="${beanstalkd.host}" port="${beanstalkd.port}" />
+        </condition>
+    </target>
+
+    <target name="integration" depends="beanstalkd-running,compile-integration" if="beanstalkd.running">
+        <junit printsummary="yes" showoutput="yes" maxmemory="512m" fork="true">
+            <classpath>
+                <path refid="test.path" />
+            </classpath>
+            <formatter type="plain" usefile="false" />
+            <batchtest fork="yes">
+                <fileset dir="${test.dir.integration}" includes="**/*Test.java" />
             </batchtest>
         </junit>
     </target>
