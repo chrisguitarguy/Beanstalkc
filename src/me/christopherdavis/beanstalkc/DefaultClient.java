@@ -13,6 +13,7 @@ import me.christopherdavis.beanstalkc.command.DeleteCommand;
 import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 import me.christopherdavis.beanstalkc.command.BuryCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
+import me.christopherdavis.beanstalkc.command.IgnoreCommand;
 
 /**
  * The default implementation of Client.
@@ -185,7 +186,7 @@ public class DefaultClient implements Client
      */
     public int ignore(String tube) throws BeanstalkcException
     {
-        return 0;
+        return doCommand(new IgnoreCommand(tube));
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException
