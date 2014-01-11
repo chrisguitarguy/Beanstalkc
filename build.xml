@@ -88,6 +88,8 @@
             <batchtest fork="yes">
                 <fileset dir="${test.dir.integration}" includes="**/*Test.java" />
             </batchtest>
+            <env key="BEANSTALKD_HOST" value="${beanstalkd.host}" />
+            <env key="BEANSTALKD_PORT" value="${beanstalkd.port}" />
         </junit>
     </target>
 
