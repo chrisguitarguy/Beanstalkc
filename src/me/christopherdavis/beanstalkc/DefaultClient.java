@@ -9,6 +9,7 @@ import me.christopherdavis.beanstalkc.command.PutJobCommand;
 import me.christopherdavis.beanstalkc.command.UseTubeCommand;
 import me.christopherdavis.beanstalkc.command.ReserveCommand;
 import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
+import me.christopherdavis.beanstalkc.command.DeleteCommand;
 
 /**
  * The default implementation of Client.
@@ -75,7 +76,7 @@ public class DefaultClient implements Client
      */
     public boolean delete(Job job) throws BeanstalkcException
     {
-        return false;
+        return delete(job.getId());
     }
 
 
@@ -84,7 +85,7 @@ public class DefaultClient implements Client
      */
     public boolean delete(int job_id) throws BeanstalkcException
     {
-        return false;
+        return doCommand(new DeleteCommand(job_id));
     }
 
     /**
