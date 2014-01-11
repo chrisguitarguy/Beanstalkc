@@ -3,18 +3,22 @@
     <description>A java library for interacting with Beanstalkd</description>
 
     <property name="build.dir" location="build" />
+    <property name="build.dir.main" location="build/main" />
+    <property name="build.dir.test" location="build/test" />
     <property name="dist.dir" location="dist" />
     <property name="src.dir" location="src" />
     <property name="lib.dir" location="lib" />
     <property name="test.dir" location="test" />
     <property name="version" value="0.1" />
+    <property name="name" value="beanstalkc" />
 
     <path id="run.path">
-        <pathelement location="${build.dir}" />
+        <pathelement location="${build.dir.main}" />
     </path>
 
     <path id="test.path">
         <path refid="run.path" />
+        <pathelement location="${build.dir.test}" />
         <fileset dir="${lib.dir}">
             <include name="**/*.jar" />
         </fileset>
@@ -22,21 +26,15 @@
 
 
     <target name="clean-build" description="Remove all files from the build directory">
-        <delete includeemptydirs="true">
-            <fileset dir="${build.dir}" excludes=".gitignore" />
-        </delete>
+        <delete dir="${build.dir}" />
     </target>
 
     <target name="clean-dist" description="Remove all files from the dist directory">
-        <delete includeemptydirs="true">
-            <fileset dir="${dist.dir}" excludes=".gitignore" />
-        </delete>
+        <delete dir="${dist.dir}" />
     </target>
 
     <target name="clean-deps" description="Remove all files from the lib directory">
-        <delete includeemptydirs="true">
-            <fileset dir="${lib.dir}" excludes=".gitignore" />
-        </delete>
+        <delete dir="${lib.dir}" />
     </target>
 
     <target name="clean" 
@@ -44,11 +42,13 @@
         description="Remove all files from the build and dist directories" />
 
     <target name="compile" depends="clean-build" description="Compile all the things">
-        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" />
+        <mkdir dir="${build.dir.main}" />
+        <javac srcdir="${src.dir}" destdir="${build.dir.main}" includeantruntime="false" />
     </target>
 
     <target name="compile-tests" depends="compile" description="Compile the test classes">
-        <javac srcdir="${test.dir}" destdir="${build.dir}" classpathref="test.path" includeantruntime="false" />
+        <mkdir dir="${build.dir.test}" />
+        <javac srcdir="${test.dir}" destdir="${build.dir.test}" classpathref="test.path" includeantruntime="false" />
     </target>
 
     <target name="test" depends="compile-tests" description="Run the unittest suite">
@@ -64,7 +64,8 @@
     </target>
 
     <target name="jar" depends="compile,clean-dist" description="Create a jarfile">
-        <jar destfile="${dist.dir}/${name}-${version}.jar" basedir="${build.dir}">
+        <mkdir dir="${dist.dir}" />
+        <jar destfile="${dist.dir}/${name}-${version}.jar" basedir="${build.dir.main}">
             <manifest>
                 <attribute name="Build-By" value="${user.name}" />
             </manifest>
