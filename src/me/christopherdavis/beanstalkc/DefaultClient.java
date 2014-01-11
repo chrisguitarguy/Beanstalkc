@@ -11,6 +11,7 @@ import me.christopherdavis.beanstalkc.command.ReserveCommand;
 import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
 import me.christopherdavis.beanstalkc.command.DeleteCommand;
 import me.christopherdavis.beanstalkc.command.ReleaseCommand;
+import me.christopherdavis.beanstalkc.command.BuryCommand;
 
 /**
  * The default implementation of Client.
@@ -126,7 +127,7 @@ public class DefaultClient implements Client
      */
     public boolean bury(Job job, int priority) throws BeanstalkcException
     {
-        return false;
+        return bury(job.getId(), priority);
     }
 
 
@@ -135,7 +136,7 @@ public class DefaultClient implements Client
      */
     public boolean bury(int job_id, int priority) throws BeanstalkcException
     {
-        return false;
+        return doCommand(new BuryCommand(job_id, priority));
     }
 
     /**
@@ -143,7 +144,7 @@ public class DefaultClient implements Client
      */
     public boolean bury(Job job) throws BeanstalkcException
     {
-        return false;
+        return bury(job.getId(), DEFAULT_PRIORITY);
     }
 
     /**
@@ -151,7 +152,7 @@ public class DefaultClient implements Client
      */
     public boolean bury(int job_id) throws BeanstalkcException
     {
-        return false;
+        return bury(job_id, DEFAULT_PRIORITY);
     }
 
     /**
