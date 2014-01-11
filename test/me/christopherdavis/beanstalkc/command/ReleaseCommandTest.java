@@ -57,12 +57,12 @@ public class ReleaseCommandTest
         Assert.assertArrayEquals(expected, out.toByteArray());
     }
 
-    @Test(expected=BeanstalkcException.class)
+    @Test
     public void testWithUnknownResponse() throws Exception
     {
         ByteArrayInputStream in = new ByteArrayInputStream("NOPE\r\n".getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ReleaseCommand cmd = new ReleaseCommand(1, 1, 1);
-        cmd.execute(in, out);
+        Assert.assertFalse(cmd.execute(in, out));
     }
 }

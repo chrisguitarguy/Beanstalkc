@@ -41,12 +41,12 @@ public class BuryCommandTest
         Assert.assertArrayEquals(expected, out.toByteArray());
     }
 
-    @Test(expected=BeanstalkcException.class)
+    @Test
     public void testWithUnknownResponse() throws Exception
     {
         ByteArrayInputStream in = new ByteArrayInputStream("NOPE\r\n".getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BuryCommand cmd = new BuryCommand(1, 10);
-        cmd.execute(in, out);
+        Assert.assertFalse(cmd.execute(in, out));
     }
 }

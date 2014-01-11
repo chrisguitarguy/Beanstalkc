@@ -55,17 +55,13 @@ public class ReleaseCommand extends AbstractCommand<Boolean>
     {
         if (first_line[0].equals("RELEASED")) {
             return true;
-        } else if (first_line[0].equals("BURIED")) {
-            return false;
-        }
-
-        if (first_line[0].equals("NOT_FOUND")) {
+        } else if (first_line[0].equals("NOT_FOUND")) {
             throw new JobNotFoundException(String.format(
                 "Job with id %d could not be found, it may be burried, or was not reserved.",
                 job_id
             ));
         }
 
-        throw new ServerErrorException("Unrecognized response from the server");
+        return false;
     }
 }

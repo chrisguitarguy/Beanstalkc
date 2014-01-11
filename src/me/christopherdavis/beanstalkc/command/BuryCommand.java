@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
-import me.christopherdavis.beanstalkc.exception.ServerErrorException;
 import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
 /**
@@ -44,7 +43,6 @@ public class BuryCommand extends AbstractCommand<Boolean>
     /**
      * @see     AbstractCommand#readResponse
      * @throws  JobNotFoundException if a NOT_FOUND response is returned
-     * @throws  ServerErrorException if an unknown response is given
      */
     @Override
     public Boolean readResponse(String[] first_line, InputStream in) throws BeanstalkcException, IOException
@@ -58,6 +56,6 @@ public class BuryCommand extends AbstractCommand<Boolean>
             ));
         }
 
-        throw new ServerErrorException("Unknown response line returned");
+        return false;
     }
 }
