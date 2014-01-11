@@ -12,6 +12,7 @@ import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
 import me.christopherdavis.beanstalkc.command.DeleteCommand;
 import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 import me.christopherdavis.beanstalkc.command.BuryCommand;
+import me.christopherdavis.beanstalkc.command.TouchCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
 import me.christopherdavis.beanstalkc.command.IgnoreCommand;
 
@@ -162,7 +163,7 @@ public class DefaultClient implements Client
      */
     public boolean touch(Job job) throws BeanstalkcException
     {
-        return false;
+        return touch(job.getId());
     }
 
     /**
@@ -170,7 +171,7 @@ public class DefaultClient implements Client
      */
     public boolean touch(int job_id) throws BeanstalkcException
     {
-        return false;
+        return doCommand(new TouchCommand(job_id));
     }
 
     /**
