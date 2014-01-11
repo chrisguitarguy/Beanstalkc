@@ -12,6 +12,7 @@ import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
 import me.christopherdavis.beanstalkc.command.DeleteCommand;
 import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 import me.christopherdavis.beanstalkc.command.BuryCommand;
+import me.christopherdavis.beanstalkc.command.WatchCommand;
 
 /**
  * The default implementation of Client.
@@ -176,7 +177,7 @@ public class DefaultClient implements Client
      */
     public int watch(String tube) throws BeanstalkcException
     {
-        return 0;
+        return doCommand(new WatchCommand(tube));
     }
 
     /**
