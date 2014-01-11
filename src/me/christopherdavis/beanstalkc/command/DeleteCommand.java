@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.ServerErrorException;
+import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
 /**
  * Delete a job from the server.
@@ -39,14 +40,21 @@ public class DeleteCommand extends AbstractCommand<Boolean>
 
     /**
      * @see     AbstractCommand#readResponse
+     * @throws  ServerErrorException if the job was not found or any other response
+     *          but deleted was returned
      */
     @Override
     public Boolean readResponse(String[] first_line, InputStream in) throws BeanstalkcException, IOException
     {
         if (first_line[0].equals("DELETED")) {
             return true;
-        } else if (first_line[0].equals("NOT_FOUND")) {
-            return false;
+        }
+
+        if (first_line[0].equals("NOT_FOUND")) {
+            throw new JobNotFoundException(String.format(
+                "Job with ID %d not found. It may have expired, be burried, or simply not exist",
+                job_id
+            ));
         }
 
         throw new ServerErrorException("Unrecognized response on delete job");

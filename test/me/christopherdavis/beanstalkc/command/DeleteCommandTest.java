@@ -12,23 +12,17 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.Assert;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
+import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
 public class DeleteCommandTest
 {
-    @Test
+    @Test(expected=JobNotFoundException.class)
     public void testWithNotFound() throws Exception
     {
-        final byte[] expected = "delete 1\r\n".getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream("NOT_FOUND\r\n".getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         DeleteCommand cmd = new DeleteCommand(1);
-
-        Assert.assertFalse(
-            "NOT_FOUND response on delete should return false",
-            cmd.execute(in, out)
-        );
-
-        Assert.assertArrayEquals(expected, out.toByteArray());
+        cmd.execute(in, out);
     }
 
     @Test
