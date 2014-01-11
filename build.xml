@@ -3,12 +3,13 @@
     <description>A java library for interacting with Beanstalkd</description>
 
     <property name="build.dir" location="build" />
-    <property name="build.dir.main" location="build/main" />
-    <property name="build.dir.test" location="build/test" />
+    <property name="build.dir.main" location="${build.dir}/main" />
+    <property name="build.dir.test" location="${build.dir}/test" />
     <property name="dist.dir" location="dist" />
     <property name="src.dir" location="src" />
     <property name="lib.dir" location="lib" />
     <property name="test.dir" location="test" />
+    <property name="test.dir.unit" location="${test.dir}/unit" />
     <property name="version" value="0.1" />
     <property name="name" value="beanstalkc" />
 
@@ -48,7 +49,7 @@
 
     <target name="compile-tests" depends="compile" description="Compile the test classes">
         <mkdir dir="${build.dir.test}" />
-        <javac srcdir="${test.dir}" destdir="${build.dir.test}" classpathref="test.path" includeantruntime="false" />
+        <javac srcdir="${test.dir.unit}" destdir="${build.dir.test}" classpathref="test.path" includeantruntime="false" />
     </target>
 
     <target name="test" depends="compile-tests" description="Run the unittest suite">
@@ -58,7 +59,7 @@
             </classpath>
             <formatter type="plain" usefile="false" />
             <batchtest fork="yes">
-                <fileset dir="${test.dir}" includes="**/*Test.java" />
+                <fileset dir="${test.dir.unit}" includes="**/*Test.java" />
             </batchtest>
         </junit>
     </target>
