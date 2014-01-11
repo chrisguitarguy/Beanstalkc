@@ -29,7 +29,6 @@
         </fileset>
     </path>
 
-
     <target name="clean-build" description="Remove all files from the build directory">
         <delete dir="${build.dir}" />
     </target>
