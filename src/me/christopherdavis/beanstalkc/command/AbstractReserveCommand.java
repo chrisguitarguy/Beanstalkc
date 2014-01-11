@@ -36,15 +36,7 @@ abstract class AbstractReserveCommand extends AbstractCommand<Job>
 
         int job_id = parseInt(first_line[1], "job ID");
         int body_length = parseInt(first_line[2], "job body length");
-        byte[] body = readLine(in);
-
-        if (body.length != body_length) {
-            throw new InvalidValueException(String.format(
-                "Expected job body to be %d bytes long, was %d bytes long",
-                body_length,
-                body.length
-            ));
-        }
+        byte[] body = readLength(in, body_length);
 
         return new DefaultJob(job_id, body);
     }

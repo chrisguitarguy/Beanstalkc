@@ -116,6 +116,44 @@ abstract class AbstractCommand<T> implements Command<T>
         return buf.toByteArray();
     }
 
+    protected byte[] readLength(InputStream in, int length) throws BeanstalkcException, IOException
+    {
+        int byt = 0;
+        byte[] bytes = new byte[length];
+        int read = in.read(bytes);
+
+        if (read < 0) {
+            throw new IOException("No bytes available to read");
+        }
+
+        // before we validate the length, lets make sure that we get
+        // a CRLF as expected
+        if (CR != (byt = in.read())) {
+            throw new InvalidValueException(String.format(
+                "Expected a Carriage return, got \"%c\"",
+                (char)byt // this won't really work all the time...
+            ));
+        }
+
+        if (LF != (byt = in.read())) {
+            throw new InvalidValueException(String.format(
+                "Expected a line feed, got \"%c\"",
+                (char)byt
+            ));
+        }
+
+        // make sure we actually go the length we expected
+        if (read != length) {
+            throw new InvalidValueException(String.format(
+                "Expected %d bytes to be read, got %d bytes long",
+                length,
+                read
+            ));
+        }
+
+        return bytes;
+    }
+
     protected int parseInt(String to_parse, String what) throws BeanstalkcException
     {
         try {
