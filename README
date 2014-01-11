@@ -1,0 +1,4 @@
+Beanstalkc
+==========
+
+A java [https://github.com/kr/beanstalkd](beanstalkd) client.
