@@ -34,4 +34,11 @@ public class DefaultJobTest
             j.getBody()
         );
     }
+
+    @Test
+    public void testIsBuried()
+    {
+        Job j = new DefaultJob(1, "body".getBytes(), true);
+        Assert.assertTrue(j.isBuried());
+    }
 }

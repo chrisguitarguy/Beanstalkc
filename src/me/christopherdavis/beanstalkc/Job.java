@@ -36,4 +36,13 @@ public interface Job
      * @return  The byte array of data
      */
     public byte[] getBody();
+
+    /**
+     * Whether or not the job is buried -- this may not be meaningful in all
+     * contexts.
+     *
+     * @since   0.1
+     * @return  True if the job was buried rather than inserted
+     */
+    public boolean isBuried();
 }

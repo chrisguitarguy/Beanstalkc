@@ -54,7 +54,7 @@ public class PutJobCommand extends AbstractCommand<Job>
 
         int job_id = parseInt(first_line[1], "job ID");
 
-        return new DefaultJob(job_id, data);
+        return new DefaultJob(job_id, data, first_line[0].equals("BURIED"));
     }
 
     private byte[] appendCrlf(byte[] orig)

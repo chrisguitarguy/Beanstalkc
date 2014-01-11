@@ -15,11 +15,18 @@ public class DefaultJob implements Job
 {
     private int id;
     private byte[] data;
+    private boolean buried;
 
-    public DefaultJob(int id, byte[] data)
+    public DefaultJob(int id, byte[] data, boolean buried)
     {
         this.id = id;
         this.data = data;
+        this.buried = buried;
+    }
+
+    public DefaultJob(int id, byte[] data)
+    {
+        this(id, data, false);
     }
 
     /**
@@ -38,5 +45,14 @@ public class DefaultJob implements Job
     public byte[] getBody()
     {
         return data;
+    }
+
+    /**
+     * @see     Job#isBuried
+     */
+    @Override
+    public boolean isBuried()
+    {
+        return buried;
     }
 }

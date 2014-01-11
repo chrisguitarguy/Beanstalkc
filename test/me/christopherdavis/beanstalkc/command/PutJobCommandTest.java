@@ -84,6 +84,7 @@ public class PutJobCommandTest
             out.toByteArray()
         );
         Assert.assertEquals(12, j.getId());
+        Assert.assertTrue(j.isBuried());
     }
 
     @Test(expected=BeanstalkcException.class)
