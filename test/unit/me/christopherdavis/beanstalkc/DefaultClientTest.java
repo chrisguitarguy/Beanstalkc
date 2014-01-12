@@ -18,6 +18,7 @@ import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 import me.christopherdavis.beanstalkc.command.BuryCommand;
 import me.christopherdavis.beanstalkc.command.KickJobCommand;
 import me.christopherdavis.beanstalkc.command.TouchCommand;
+import me.christopherdavis.beanstalkc.command.PeekCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
 import me.christopherdavis.beanstalkc.command.IgnoreCommand;
 
@@ -119,6 +120,17 @@ public class DefaultClientTest
 
         Assert.assertEquals(expected, client.touch(j));
         Assert.assertEquals(expected, client.touch(1));
+    }
+
+    @Test
+    public void testPeek() throws Exception
+    {
+        final Job expected = new DefaultJob(1, "test".getBytes());
+        final Job j = new DefaultJob(1, "test".getBytes());
+        Mockito.when(adapter.perform(Mockito.isA(PeekCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.peek(j));
+        Assert.assertSame(expected, client.peek(1));
     }
 
     @Test

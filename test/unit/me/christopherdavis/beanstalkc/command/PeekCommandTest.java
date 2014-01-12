@@ -11,42 +11,40 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.junit.Test;
 import org.junit.Assert;
+import me.christopherdavis.beanstalkc.Job;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
-public class BuryCommandTest
+public class PeekCommandTest
 {
     @Test(expected=JobNotFoundException.class)
     public void testWithNotFound() throws Exception
     {
         ByteArrayInputStream in = new ByteArrayInputStream("NOT_FOUND\r\n".getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BuryCommand cmd = new BuryCommand(1, 1);
+        PeekCommand cmd = new PeekCommand(1);
         cmd.execute(in, out);
     }
 
     @Test
-    public void testWithBuried() throws Exception
+    public void testWithFound() throws Exception
     {
-        final byte[] expected = "bury 1 10\r\n".getBytes();
-        ByteArrayInputStream in = new ByteArrayInputStream("BURIED\r\n".getBytes());
+        final byte[] expected = "peek 1\r\n".getBytes();
+        ByteArrayInputStream in = new ByteArrayInputStream("FOUND 1 4\r\ntest\r\n".getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BuryCommand cmd = new BuryCommand(1, 10);
+        PeekCommand cmd = new PeekCommand(1);
 
-        Assert.assertTrue(
-            "BURIED response on bury should return true",
-            cmd.execute(in, out)
-        );
-
+        Job j = cmd.execute(in, out);
+        Assert.assertEquals(1, j.getId());
         Assert.assertArrayEquals(expected, out.toByteArray());
     }
 
-    @Test
+    @Test(expected=BeanstalkcException.class)
     public void testWithUnknownResponse() throws Exception
     {
         ByteArrayInputStream in = new ByteArrayInputStream("NOPE\r\n".getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BuryCommand cmd = new BuryCommand(1, 10);
-        Assert.assertFalse(cmd.execute(in, out));
+        PeekCommand cmd = new PeekCommand(1);
+        cmd.execute(in, out);
     }
 }

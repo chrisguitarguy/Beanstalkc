@@ -14,6 +14,7 @@ import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 import me.christopherdavis.beanstalkc.command.BuryCommand;
 import me.christopherdavis.beanstalkc.command.KickJobCommand;
 import me.christopherdavis.beanstalkc.command.TouchCommand;
+import me.christopherdavis.beanstalkc.command.PeekCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
 import me.christopherdavis.beanstalkc.command.IgnoreCommand;
 
@@ -189,6 +190,22 @@ public class DefaultClient implements Client
     public boolean touch(int job_id) throws BeanstalkcException
     {
         return doCommand(new TouchCommand(job_id));
+    }
+
+    /**
+     * @see     Client#peek
+     */
+    public Job peek(Job job) throws BeanstalkcException
+    {
+        return peek(job.getId());
+    }
+
+    /**
+     * @see     Client#peek
+     */
+    public Job peek(int job_id) throws BeanstalkcException
+    {
+        return doCommand(new PeekCommand(job_id));
     }
 
     /**

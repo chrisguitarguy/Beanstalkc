@@ -212,6 +212,26 @@ public interface Client
     public boolean touch(int job_id) throws BeanstalkcException;
 
     /**
+     * Peek at a job.
+     *
+     * @since   0.1
+     * @param   job The job at which to peek
+     * @return  A job if the peek command is successful
+     * @throws  JobNotFoundException if a NOT_FOUND response is returned
+     */
+    public Job peek(Job job) throws BeanstalkcException;
+
+    /**
+     * Peek at a job.
+     *
+     * @since   0.1
+     * @param   job_id The id of the jot at which to peek
+     * @return  A job if the peek command is successful
+     * @throws  JobNotFoundException if a NOT_FOUND response is returned
+     */
+    public Job peek(int job_id) throws BeanstalkcException;
+
+    /**
      * For consumers to "watch" a tube, mark it as something from which jobs
      * can be drawn.
      *

@@ -8,6 +8,7 @@ import java.util.Random;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
+import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
 public class JobLifecycleTest
 {
@@ -68,6 +69,15 @@ public class JobLifecycleTest
         Assert.assertEquals(inserted.getId(), fetched.getId());
         Assert.assertTrue(client.bury(fetched));
         Assert.assertTrue(client.kickJob(fetched));
+
+        // peek at a the job.
+        fetched = client.peek(inserted);
+        Assert.assertEquals(inserted.getId(), fetched.getId());
+        try {
+            client.peek(100000);
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof JobNotFoundException);
+        }
     }
 
     @Before
