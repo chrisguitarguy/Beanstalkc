@@ -176,6 +176,24 @@ public interface Client
     public boolean bury(int job_id) throws BeanstalkcException;
 
     /**
+     * Kick a job from a "buried" state into a ready state.
+     *
+     * @since   0.1
+     * @param   job The job to kick
+     * @return  True if the job was kicked, false otherwise
+     */
+    public boolean kickJob(Job job) throws BeanstalkcException;
+
+    /**
+     * Kick a job from the buried stated into a ready state by its job ID.
+     *
+     * @since   0.1
+     * @param   job_id The ID of the job to kick
+     * @return  True if the job was kicked, false otherwise
+     */
+    public boolean kickJob(int job_id) throws BeanstalkcException;
+
+    /**
      * Touch a job (request more time to work on the job).
      *
      * @since   0.1

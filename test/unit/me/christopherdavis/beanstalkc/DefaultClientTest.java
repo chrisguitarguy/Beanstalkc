@@ -16,6 +16,7 @@ import me.christopherdavis.beanstalkc.command.ReserveTimeoutCommand;
 import me.christopherdavis.beanstalkc.command.DeleteCommand;
 import me.christopherdavis.beanstalkc.command.ReleaseCommand;
 import me.christopherdavis.beanstalkc.command.BuryCommand;
+import me.christopherdavis.beanstalkc.command.KickJobCommand;
 import me.christopherdavis.beanstalkc.command.TouchCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
 import me.christopherdavis.beanstalkc.command.IgnoreCommand;
@@ -96,6 +97,17 @@ public class DefaultClientTest
         Assert.assertEquals(expected, client.bury(1, 1));
         Assert.assertEquals(expected, client.bury(j));
         Assert.assertEquals(expected, client.bury(1));
+    }
+
+    @Test
+    public void testKickJob() throws Exception
+    {
+        final boolean expected = true;
+        final Job j = new DefaultJob(1, "test".getBytes());
+        Mockito.when(adapter.perform(Mockito.isA(KickJobCommand.class))).thenReturn(expected);
+
+        Assert.assertEquals(expected, client.kickJob(j));
+        Assert.assertEquals(expected, client.kickJob(1));
     }
 
     @Test

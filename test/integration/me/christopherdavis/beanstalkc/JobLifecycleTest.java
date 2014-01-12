@@ -63,10 +63,11 @@ public class JobLifecycleTest
         Assert.assertTrue(client.touch(fetched));
         Assert.assertTrue(client.release(fetched));
 
-        // reserve the job then bury it
+        // reserve the job, bury it, then kick it
         fetched = client.reserve();
         Assert.assertEquals(inserted.getId(), fetched.getId());
         Assert.assertTrue(client.bury(fetched));
+        Assert.assertTrue(client.kickJob(fetched));
     }
 
     @Before
