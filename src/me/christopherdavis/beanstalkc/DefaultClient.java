@@ -176,7 +176,7 @@ public class DefaultClient implements Client
     }
 
     /**
-     * @see     Client#bury
+     * @see     Client#touch
      */
     public boolean touch(Job job) throws BeanstalkcException
     {
