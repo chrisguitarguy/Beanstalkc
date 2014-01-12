@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
 import me.christopherdavis.beanstalkc.Command;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.ServerErrorException;
