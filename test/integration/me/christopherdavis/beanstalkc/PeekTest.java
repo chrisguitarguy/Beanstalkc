@@ -10,9 +10,8 @@ import org.junit.Assert;
 
 public class PeekTest
 {
-    Client client;
-
-    Random rand;
+    private Client client;
+    private Random rand;
 
     public PeekTest() throws Exception
     {

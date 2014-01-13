@@ -7,12 +7,18 @@ package me.christopherdavis.beanstalkc;
 import java.util.Random;
 import org.junit.Test;
 import org.junit.Assert;
-import org.junit.Before;
 import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
 public class JobLifecycleTest
 {
     private Client client;
+    private Random rand;
+
+    public JobLifecycleTest() throws Exception
+    {
+        client = ConnectionHelper.create();
+        rand = new Random();
+    }
 
     @Test
     public void testUseTube() throws Exception
@@ -45,10 +51,9 @@ public class JobLifecycleTest
     {
         Job inserted;
         Job fetched;
-        Random r = new Random();
 
         final byte[] body = "test body".getBytes();
-        final String tube = String.format("lifecycle_tube_%d", r.nextInt(10000));
+        final String tube = generateTubeName();
 
         // create a new job
         Assert.assertTrue(client.use(tube));
@@ -73,16 +78,50 @@ public class JobLifecycleTest
         // peek at a the job.
         fetched = client.peek(inserted);
         Assert.assertEquals(inserted.getId(), fetched.getId());
-        try {
-            client.peek(100000);
-        } catch (Exception e) {
-            Assert.assertTrue(e instanceof JobNotFoundException);
-        }
     }
 
-    @Before
-    public void setUp() throws Exception
+    @Test(expected=JobNotFoundException.class)
+    public void testPeekWithInvalidJob() throws Exception
     {
-        client = ConnectionHelper.create();
+        client.peek(10000);
+    }
+
+    @Test(expected=JobNotFoundException.class)
+    public void testBuryWithInvalidJob() throws Exception
+    {
+        client.bury(10000);
+    }
+
+    @Test(expected=JobNotFoundException.class)
+    public void testKickJobWithInvalidJob() throws Exception
+    {
+        client.kickJob(10000);
+    }
+
+    @Test(expected=JobNotFoundException.class)
+    public void testTouchWithInvalidJob() throws Exception
+    {
+        client.touch(10000);
+    }
+
+    @Test(expected=JobNotFoundException.class)
+    public void testReleaseWithInvalidJob() throws Exception
+    {
+        client.release(10000);
+    }
+
+    @Test
+    public void testReserveWithoutJob() throws Exception
+    {
+        final String tube = generateTubeName();
+        client.watch(tube);
+        client.ignore("default");
+
+        Assert.assertNull(client.reserve(1));
+    }
+
+    private String generateTubeName()
+    {
+        return String.format("peektest_tube_%d", rand.nextInt(10000));
     }
 }
