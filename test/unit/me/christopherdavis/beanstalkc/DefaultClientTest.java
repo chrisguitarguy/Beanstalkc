@@ -21,6 +21,9 @@ import me.christopherdavis.beanstalkc.command.TouchCommand;
 import me.christopherdavis.beanstalkc.command.PeekCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
 import me.christopherdavis.beanstalkc.command.IgnoreCommand;
+import me.christopherdavis.beanstalkc.command.PeekReadyCommand;
+import me.christopherdavis.beanstalkc.command.PeekDelayedCommand;
+import me.christopherdavis.beanstalkc.command.PeekBuriedCommand;
 
 public class DefaultClientTest
 {
@@ -149,6 +152,33 @@ public class DefaultClientTest
         Mockito.when(adapter.perform(Mockito.isA(IgnoreCommand.class))).thenReturn(expected);
 
         Assert.assertEquals(expected, client.ignore("tube"));
+    }
+
+    @Test
+    public void testPeekReady() throws Exception
+    {
+        final Job expected = new DefaultJob(1, "test".getBytes());
+        Mockito.when(adapter.perform(Mockito.isA(PeekReadyCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.peekReady());
+    }
+
+    @Test
+    public void testPeekDelayed() throws Exception
+    {
+        final Job expected = new DefaultJob(1, "test".getBytes());
+        Mockito.when(adapter.perform(Mockito.isA(PeekDelayedCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.peekDelayed());
+    }
+
+    @Test
+    public void testPeekBuried() throws Exception
+    {
+        final Job expected = new DefaultJob(1, "test".getBytes());
+        Mockito.when(adapter.perform(Mockito.isA(PeekBuriedCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.peekBuried());
     }
 
     @Before

@@ -250,4 +250,28 @@ public interface Client
      * @return  The number of tubes the client is currently watching.
      */
     public int ignore(String tube) throws BeanstalkcException;
+
+    /**
+     * Peek for an "ready" job.
+     *
+     * @since   0.1
+     * @return  A `Job` instance if one is available, null otherwise
+     */
+    public Job peekReady() throws BeanstalkcException;
+
+    /**
+     * Peek for a "delayed" job.
+     *
+     * @since   0.1
+     * @return  A `Job` instance if one is available, null otherwise
+     */
+    public Job peekDelayed() throws BeanstalkcException;
+
+    /**
+     * Peek for a "buried" job.
+     *
+     * @since   0.1
+     * @return  A `Job` instance if one is available, null otherwise
+     */
+    public Job peekBuried() throws BeanstalkcException;
 }

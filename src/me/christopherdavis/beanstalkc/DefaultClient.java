@@ -17,6 +17,9 @@ import me.christopherdavis.beanstalkc.command.TouchCommand;
 import me.christopherdavis.beanstalkc.command.PeekCommand;
 import me.christopherdavis.beanstalkc.command.WatchCommand;
 import me.christopherdavis.beanstalkc.command.IgnoreCommand;
+import me.christopherdavis.beanstalkc.command.PeekReadyCommand;
+import me.christopherdavis.beanstalkc.command.PeekDelayedCommand;
+import me.christopherdavis.beanstalkc.command.PeekBuriedCommand;
 
 /**
  * The default implementation of Client.
@@ -222,6 +225,30 @@ public class DefaultClient implements Client
     public int ignore(String tube) throws BeanstalkcException
     {
         return doCommand(new IgnoreCommand(tube));
+    }
+
+    /**
+     * @see     Client#peekReady
+     */
+    public Job peekReady() throws BeanstalkcException
+    {
+        return doCommand(new PeekReadyCommand());
+    }
+
+    /**
+     * @see     Client#peekDelayed
+     */
+    public Job peekDelayed() throws BeanstalkcException
+    {
+        return doCommand(new PeekDelayedCommand());
+    }
+
+    /**
+     * @see     Client#peekBuried
+     */
+    public Job peekBuried() throws BeanstalkcException
+    {
+        return doCommand(new PeekBuriedCommand());
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException
