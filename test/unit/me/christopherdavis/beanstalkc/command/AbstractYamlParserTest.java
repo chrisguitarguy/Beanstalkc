@@ -4,10 +4,10 @@
 
 package me.christopherdavis.beanstalkc.command;
 
-import java.io.OutputStream;
 import org.junit.Test;
 import org.junit.Assert;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
+import me.christopherdavis.beanstalkc.exception.YamlException;
 
 public class AbstractYamlParserTest
 {
@@ -59,7 +59,7 @@ public class AbstractYamlParserTest
         try {
             parser.parse("test".getBytes());
         } catch (Exception caught) {
-            Assert.assertTrue(caught instanceof BeanstalkcException);
+            Assert.assertTrue(caught instanceof YamlException);
             Assert.assertSame(e, caught.getCause());
         }
     }
