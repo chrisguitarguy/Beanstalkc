@@ -4,15 +4,15 @@
 
 package me.christopherdavis.beanstalkc.command;
 
+import java.util.List;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Assert;
-import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.YamlException;
 
 public class YamlListParserTest
 {
-    public YamlListParser parser = new YamlListParser();
+    private YamlListParser parser = new YamlListParser();
 
     @Test(expected=YamlException.class)
     public void testWithoutValidList() throws Exception
@@ -29,7 +29,7 @@ public class YamlListParserTest
     @Test
     public void testWithValidYaml() throws Exception
     {
-        ArrayList<String> list = parser.parse("---\n - one\n - two".getBytes());
+        List<String> list = parser.parse("---\n - one\n - two".getBytes());
         Assert.assertEquals(2, list.size());
         Assert.assertEquals("one", list.get(0));
         Assert.assertEquals("two", list.get(1));

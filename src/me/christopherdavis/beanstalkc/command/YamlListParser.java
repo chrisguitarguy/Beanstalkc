@@ -4,12 +4,9 @@
 
 package me.christopherdavis.beanstalkc.command;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.util.Scanner;
+import java.util.List;
 import java.util.ArrayList;
-import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.YamlException;
 
 /**
@@ -18,14 +15,16 @@ import me.christopherdavis.beanstalkc.exception.YamlException;
  * @since   0.1
  * @author  Christopher Davis <http://christopherdavis.me>
  */
-class YamlListParser extends AbstractYamlParser<ArrayList<String>>
+class YamlListParser extends AbstractYamlParser<List<String>>
 {
-    protected ArrayList<String> createOutput() 
+    @Override
+    protected List<String> createOutput() 
     {
         return new ArrayList<String>();
     }
 
-    protected void handleLine(String line, ArrayList<String> output) throws Exception
+    @Override
+    protected void handleLine(String line, List<String> output) throws Exception
     {
         Character c;
 
@@ -37,8 +36,9 @@ class YamlListParser extends AbstractYamlParser<ArrayList<String>>
         c = line.charAt(0);
         if ('-' != c) {
             throw new YamlException(String.format(
-                "Expected line to begin with \"-\" got \"%c\"",
-                c
+                "Expected line to begin with \"-\" got \"%c\" -- %s",
+                c,
+                line
             ));
         }
 
@@ -46,8 +46,9 @@ class YamlListParser extends AbstractYamlParser<ArrayList<String>>
         c = line.charAt(1);
         if (!Character.isWhitespace(c)) {
             throw new YamlException(String.format(
-                "Expected line to have a space following its dash, got \"%c\"",
-                c
+                "Expected line to have a space following its dash, got \"%c\" -- %s",
+                c,
+                line
             ));
         }
 
