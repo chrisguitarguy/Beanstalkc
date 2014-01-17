@@ -20,6 +20,7 @@ import me.christopherdavis.beanstalkc.command.IgnoreCommand;
 import me.christopherdavis.beanstalkc.command.PeekReadyCommand;
 import me.christopherdavis.beanstalkc.command.PeekDelayedCommand;
 import me.christopherdavis.beanstalkc.command.PeekBuriedCommand;
+import me.christopherdavis.beanstalkc.command.KickCommand;
 
 /**
  * The default implementation of Client.
@@ -249,6 +250,14 @@ public class DefaultClient implements Client
     public Job peekBuried() throws BeanstalkcException
     {
         return doCommand(new PeekBuriedCommand());
+    }
+
+    /**
+     * @see     Client#kick
+     */
+    public int kick(int to_kick) throws BeanstalkcException
+    {
+        return doCommand(new KickCommand(to_kick));
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException

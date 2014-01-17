@@ -274,4 +274,12 @@ public interface Client
      * @return  A `Job` instance if one is available, null otherwise
      */
     public Job peekBuried() throws BeanstalkcException;
+
+    /**
+     * Kick a maximum of `to_kick` jobs out of a buried state.
+     *
+     * @since   0.1
+     * @return  The number of jobs kicked if successful, or -1 otherwise
+     */
+    public int kick(int to_kick) throws BeanstalkcException;
 }

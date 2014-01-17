@@ -24,6 +24,7 @@ import me.christopherdavis.beanstalkc.command.IgnoreCommand;
 import me.christopherdavis.beanstalkc.command.PeekReadyCommand;
 import me.christopherdavis.beanstalkc.command.PeekDelayedCommand;
 import me.christopherdavis.beanstalkc.command.PeekBuriedCommand;
+import me.christopherdavis.beanstalkc.command.KickCommand;
 
 public class DefaultClientTest
 {
@@ -179,6 +180,15 @@ public class DefaultClientTest
         Mockito.when(adapter.perform(Mockito.isA(PeekBuriedCommand.class))).thenReturn(expected);
 
         Assert.assertSame(expected, client.peekBuried());
+    }
+
+    @Test
+    public void testKick() throws Exception
+    {
+        final int expected = 10;
+        Mockito.when(adapter.perform(Mockito.isA(KickCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.kick(20));
     }
 
     @Before
