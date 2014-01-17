@@ -78,6 +78,12 @@ public class JobLifecycleTest
         // peek at a the job.
         fetched = client.peek(inserted);
         Assert.assertEquals(inserted.getId(), fetched.getId());
+
+        // reserve the job, bury it, the kick it out with the general kick command
+        fetched = client.reserve();
+        Assert.assertEquals(inserted.getId(), fetched.getId());
+        Assert.assertTrue(client.bury(fetched));
+        Assert.assertTrue(client.kick(10) == 1);
     }
 
     @Test(expected=JobNotFoundException.class)
