@@ -4,6 +4,8 @@
 
 package me.christopherdavis.beanstalkc;
 
+import java.util.Map;
+import java.util.HashMap;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,6 +27,10 @@ import me.christopherdavis.beanstalkc.command.PeekReadyCommand;
 import me.christopherdavis.beanstalkc.command.PeekDelayedCommand;
 import me.christopherdavis.beanstalkc.command.PeekBuriedCommand;
 import me.christopherdavis.beanstalkc.command.KickCommand;
+import me.christopherdavis.beanstalkc.command.StatsJobCommand;
+import me.christopherdavis.beanstalkc.command.StatsTubeCommand;
+import me.christopherdavis.beanstalkc.command.StatsCommand;
+
 
 public class DefaultClientTest
 {
@@ -189,6 +195,35 @@ public class DefaultClientTest
         Mockito.when(adapter.perform(Mockito.isA(KickCommand.class))).thenReturn(expected);
 
         Assert.assertSame(expected, client.kick(20));
+    }
+
+    @Test
+    public void testStatsJob() throws Exception
+    {
+        final Job j = new DefaultJob(20, "one".getBytes());
+        final Map<String, String> expected = new HashMap<String, String>();
+        Mockito.when(adapter.perform(Mockito.isA(StatsJobCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.statsJob(20));
+        Assert.assertSame(expected, client.statsJob(j));
+    }
+
+    @Test
+    public void testStatsTube() throws Exception
+    {
+        final Map<String, String> expected = new HashMap<String, String>();
+        Mockito.when(adapter.perform(Mockito.isA(StatsTubeCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.statsTube("test"));
+    }
+
+    @Test
+    public void testStats() throws Exception
+    {
+        final Map<String, String> expected = new HashMap<String, String>();
+        Mockito.when(adapter.perform(Mockito.isA(StatsCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.stats());
     }
 
     @Before

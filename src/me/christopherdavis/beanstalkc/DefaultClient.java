@@ -4,6 +4,7 @@
 
 package me.christopherdavis.beanstalkc;
 
+import java.util.Map;
 import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
 import me.christopherdavis.beanstalkc.command.PutJobCommand;
 import me.christopherdavis.beanstalkc.command.UseTubeCommand;
@@ -21,6 +22,9 @@ import me.christopherdavis.beanstalkc.command.PeekReadyCommand;
 import me.christopherdavis.beanstalkc.command.PeekDelayedCommand;
 import me.christopherdavis.beanstalkc.command.PeekBuriedCommand;
 import me.christopherdavis.beanstalkc.command.KickCommand;
+import me.christopherdavis.beanstalkc.command.StatsJobCommand;
+import me.christopherdavis.beanstalkc.command.StatsTubeCommand;
+import me.christopherdavis.beanstalkc.command.StatsCommand;
 
 /**
  * The default implementation of Client.
@@ -258,6 +262,38 @@ public class DefaultClient implements Client
     public int kick(int to_kick) throws BeanstalkcException
     {
         return doCommand(new KickCommand(to_kick));
+    }
+
+    /**
+     * @see     Client#statsJob
+     */
+    public Map<String, String> statsJob(Job j) throws BeanstalkcException
+    {
+        return statsJob(j.getId());
+    }
+
+    /**
+     * @see     Client#statsJob
+     */
+    public Map<String, String> statsJob(int job_id) throws BeanstalkcException
+    {
+        return doCommand(new StatsJobCommand(job_id));
+    }
+
+    /**
+     * @see     Client#statsTube
+     */
+    public Map<String, String> statsTube(String tube) throws BeanstalkcException
+    {
+        return doCommand(new StatsTubeCommand(tube));
+    }
+
+    /**
+     * @see     Client#stats
+     */
+    public Map<String, String> stats() throws BeanstalkcException
+    {
+        return doCommand(new StatsCommand());
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException

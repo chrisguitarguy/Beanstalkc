@@ -4,6 +4,8 @@
 
 package me.christopherdavis.beanstalkc;
 
+import java.util.Map;
+
 /**
  * All interaction with the beanstalkd server goes through client
  * implementations.
@@ -282,4 +284,40 @@ public interface Client
      * @return  The number of jobs kicked if successful, or -1 otherwise
      */
     public int kick(int to_kick) throws BeanstalkcException;
+
+    /**
+     * Check the stats on a job.
+     *
+     * @since   0.1
+     * @return  A map of all the values returned from the server, or null on a
+     *          failed request.
+     */
+    public Map<String, String> statsJob(Job j) throws BeanstalkcException;
+
+    /**
+     * Check the stats on a job using its ID.
+     *
+     * @since   0.1
+     * @return  A map of all the values returned from the server, or null on a
+     *          failed request.
+     */
+    public Map<String, String> statsJob(int job_id) throws BeanstalkcException;
+
+    /**
+     * Check the stats on a tube.
+     *
+     * @since   0.1
+     * @return  A map of all the values returned from the server, or null on a
+     *          failed request.
+     */
+    public Map<String, String> statsTube(String tube) throws BeanstalkcException;
+
+    /**
+     * Check the status on the server as a whole.
+     *
+     * @since   0.1
+     * @return  A map of all the values returned from the server, or null on a
+     *          failed request.
+     */
+    public Map<String, String> stats() throws BeanstalkcException;
 }
