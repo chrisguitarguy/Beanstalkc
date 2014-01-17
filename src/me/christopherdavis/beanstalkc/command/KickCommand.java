@@ -46,7 +46,7 @@ public class KickCommand extends AbstractCommand<Integer>
      *          parse or understand.
      */
     @Override
-    public Integer readResponse(String[] first_line, InputStream in) throws BeanstalkcException, IOException
+    protected Integer readResponse(String[] first_line, InputStream in) throws BeanstalkcException, IOException
     {
         if (first_line.length < 2) {
             throw new ServerErrorException(String.format(
