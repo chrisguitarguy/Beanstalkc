@@ -78,7 +78,7 @@
         </condition>
     </target>
 
-    <target name="integration" depends="beanstalkd-running,compile-integration" if="beanstalkd.running">
+    <target name="integration" depends="beanstalkd-running,compile,compile-integration" if="beanstalkd.running">
         <junit printsummary="yes" showoutput="yes" maxmemory="512m" fork="true">
             <classpath>
                 <path refid="test.path" />
