@@ -4,8 +4,6 @@
 
 package me.christopherdavis.beanstalkc;
 
-import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
-
 import java.util.Map;
 
 class ConnectionHelper
@@ -16,7 +14,7 @@ class ConnectionHelper
 
     public static Client create() throws Exception
     {
-        return new DefaultClient(new SocketAdapter(getHost(), getPort()));
+        return new DefaultClient(getHost(), getPort());
     }
 
     private static int getPort() throws Exception

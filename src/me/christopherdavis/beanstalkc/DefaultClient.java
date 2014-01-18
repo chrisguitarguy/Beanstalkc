@@ -43,10 +43,21 @@ public class DefaultClient implements Client
     final private static int DEFAULT_DELAY = 0;
     final private static int DEFAULT_TTR = 60; // 1 minute
     final private static int DEFAULT_PRIORITY = 1024;
+    final private static String DEFAULT_HOST = "localhost";
+    final private static int DEFAULT_PORT = 11300;
 
     private Adapter adapter;
-
     private boolean gotClose = false;
+
+    public DefaultClient() throws BeanstalkcException
+    {
+        this(DEFAULT_HOST, DEFAULT_PORT);
+    }
+
+    public DefaultClient(String host, int port) throws BeanstalkcException
+    {
+        this(new SocketAdapter(host, port));
+    }
 
     public DefaultClient(Adapter adapter) throws BeanstalkcException
     {
