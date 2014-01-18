@@ -6,6 +6,7 @@ package me.christopherdavis.beanstalkc;
 
 import java.util.Map;
 import java.util.List;
+import java.io.IOException;
 import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
 import me.christopherdavis.beanstalkc.command.PutJobCommand;
 import me.christopherdavis.beanstalkc.command.UseTubeCommand;
@@ -29,6 +30,7 @@ import me.christopherdavis.beanstalkc.command.StatsCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesWatchedCommand;
 import me.christopherdavis.beanstalkc.command.ListTubeUsedCommand;
+import me.christopherdavis.beanstalkc.command.QuitCommand;
 
 /**
  * The default implementation of Client.
@@ -43,6 +45,8 @@ public class DefaultClient implements Client
     final private static int DEFAULT_PRIORITY = 1024;
 
     private Adapter adapter;
+
+    private boolean gotClose = false;
 
     public DefaultClient(Adapter adapter) throws BeanstalkcException
     {
@@ -322,6 +326,32 @@ public class DefaultClient implements Client
     public String listTubeUsed() throws BeanstalkcException
     {
         return doCommand(new ListTubeUsedCommand());
+    }
+
+    /**
+     * @see     Client#close
+     */
+    public void close() throws IOException
+    {
+        try {
+            doCommand(new QuitCommand());
+        } catch (BeanstalkcException e) {
+            throw new IOException("Could not close the server", e);
+        }
+
+        if (!adapter.isClosed()) {
+            adapter.close();
+        }
+
+        gotClose = true;
+    }
+
+    /**
+     * @see     Client#isClosed
+     */
+    public boolean isClosed()
+    {
+        return gotClose && adapter.isClosed();
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException

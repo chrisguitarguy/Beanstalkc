@@ -35,6 +35,7 @@ import me.christopherdavis.beanstalkc.command.StatsCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesWatchedCommand;
 import me.christopherdavis.beanstalkc.command.ListTubeUsedCommand;
+import me.christopherdavis.beanstalkc.command.QuitCommand;
 
 
 public class DefaultClientTest
@@ -256,6 +257,24 @@ public class DefaultClientTest
         Mockito.when(adapter.perform(Mockito.isA(ListTubeUsedCommand.class))).thenReturn(expected);
 
         Assert.assertEquals(expected, client.listTubeUsed());
+    }
+
+    @Test
+    public void testClose() throws Exception
+    {
+        Mockito.when(adapter.perform(Mockito.isA(QuitCommand.class))).thenReturn(true);
+        Mockito.when(adapter.isClosed()).thenReturn(false);
+
+        client.close();
+
+        Mockito.verify(adapter, Mockito.times(1)).close();
+    }
+
+    @Test
+    public void testIsClosed() throws Exception
+    {
+        Mockito.when(adapter.isClosed()).thenReturn(false);
+        Assert.assertFalse(client.isClosed());
     }
 
     @Before
