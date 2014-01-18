@@ -45,4 +45,16 @@ public class SocketAdapter implements Adapter
             throw new ConnectionException(e.getMessage(), e);
         }
     }
+
+    public void close() throws IOException
+    {
+        if (!sock.isClosed()) {
+            sock.close();
+        }
+    }
+
+    public boolean isClosed()
+    {
+        return sock.isClosed();
+    }
 }
