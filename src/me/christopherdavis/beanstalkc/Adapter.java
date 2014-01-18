@@ -4,6 +4,9 @@
 
 package me.christopherdavis.beanstalkc;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 /**
  * Adapters wrap up the write/read response lifecycle of talking with the
  * beanstalkd server.
@@ -18,7 +21,7 @@ package me.christopherdavis.beanstalkc;
  * @since   0.1
  * @author  Christopher Davis <http://christopherdavis.me>
  */
-public interface Adapter
+public interface Adapter extends Closeable
 {
     /**
      * Perform a command.
@@ -28,4 +31,19 @@ public interface Adapter
      * @return  The response.
      */
     public <T> T perform(Command<T> cmd) throws BeanstalkcException;
+
+    /**
+     * Close whatever connections exist in this adapter.
+     *
+     * @since   0.1
+     */
+    public void close() throws IOException;
+
+    /**
+     * Check to see whether the adapter is open.
+     *
+     * @since   0.1
+     * @return  boolean
+     */
+    public boolean isClosed();
 }
