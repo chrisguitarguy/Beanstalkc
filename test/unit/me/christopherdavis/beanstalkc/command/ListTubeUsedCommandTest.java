@@ -8,10 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import org.junit.Test;
 import org.junit.Assert;
-import me.christopherdavis.beanstalkc.BeanstalkcException;
 
 public class ListTubeUsedCommandTest
 {
