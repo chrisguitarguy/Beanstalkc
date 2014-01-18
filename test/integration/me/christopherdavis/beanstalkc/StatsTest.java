@@ -5,6 +5,7 @@
 package me.christopherdavis.beanstalkc;
 
 import java.util.Map;
+import java.util.List;
 import java.util.Random;
 import org.junit.Test;
 import org.junit.Assert;
@@ -67,6 +68,14 @@ public class StatsTest
 
         Assert.assertNotNull(res);
         Assert.assertTrue(res.containsKey("version"));
+    }
+
+    @Test
+    public void testListTubes() throws Exception
+    {
+        List<String> res = client.listTubes();
+        // we should have at least one tube by this point...
+        Assert.assertTrue(res.size() > 0);
     }
 
     private String generateTubeName()

@@ -5,6 +5,7 @@
 package me.christopherdavis.beanstalkc;
 
 import java.util.Map;
+import java.util.List;
 import me.christopherdavis.beanstalkc.adapter.SocketAdapter;
 import me.christopherdavis.beanstalkc.command.PutJobCommand;
 import me.christopherdavis.beanstalkc.command.UseTubeCommand;
@@ -25,6 +26,7 @@ import me.christopherdavis.beanstalkc.command.KickCommand;
 import me.christopherdavis.beanstalkc.command.StatsJobCommand;
 import me.christopherdavis.beanstalkc.command.StatsTubeCommand;
 import me.christopherdavis.beanstalkc.command.StatsCommand;
+import me.christopherdavis.beanstalkc.command.ListTubesCommand;
 
 /**
  * The default implementation of Client.
@@ -294,6 +296,14 @@ public class DefaultClient implements Client
     public Map<String, String> stats() throws BeanstalkcException
     {
         return doCommand(new StatsCommand());
+    }
+
+    /**
+     * @see     Client#listTubes
+     */
+    public List<String> listTubes() throws BeanstalkcException
+    {
+        return doCommand(new ListTubesCommand());
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException

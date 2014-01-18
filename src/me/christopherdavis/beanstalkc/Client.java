@@ -5,6 +5,7 @@
 package me.christopherdavis.beanstalkc;
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * All interaction with the beanstalkd server goes through client
@@ -320,4 +321,12 @@ public interface Client
      *          failed request.
      */
     public Map<String, String> stats() throws BeanstalkcException;
+
+    /**
+     * See what tubes are in existence on the server.
+     *
+     * @since   0.1
+     * @return  A list of all the tubes available
+     */
+    public List<String> listTubes() throws BeanstalkcException;
 }

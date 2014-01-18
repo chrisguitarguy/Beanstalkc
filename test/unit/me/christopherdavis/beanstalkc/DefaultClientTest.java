@@ -6,6 +6,8 @@ package me.christopherdavis.beanstalkc;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,6 +32,7 @@ import me.christopherdavis.beanstalkc.command.KickCommand;
 import me.christopherdavis.beanstalkc.command.StatsJobCommand;
 import me.christopherdavis.beanstalkc.command.StatsTubeCommand;
 import me.christopherdavis.beanstalkc.command.StatsCommand;
+import me.christopherdavis.beanstalkc.command.ListTubesCommand;
 
 
 public class DefaultClientTest
@@ -224,6 +227,15 @@ public class DefaultClientTest
         Mockito.when(adapter.perform(Mockito.isA(StatsCommand.class))).thenReturn(expected);
 
         Assert.assertSame(expected, client.stats());
+    }
+
+    @Test
+    public void testListTubes() throws Exception
+    {
+        final List<String> expected = new ArrayList<String>();
+        Mockito.when(adapter.perform(Mockito.isA(ListTubesCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.listTubes());
     }
 
     @Before
