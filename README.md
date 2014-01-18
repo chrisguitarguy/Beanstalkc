@@ -50,7 +50,7 @@ public class TestingBeanstalkc
         }
 
         if (null == found) {
-            System.out.println("Found a job");
+            System.out.println("Found no job");
         } else {
             System.out.println(String.format(
                 "Found a job with ID %d",
