@@ -28,6 +28,7 @@ import me.christopherdavis.beanstalkc.command.StatsTubeCommand;
 import me.christopherdavis.beanstalkc.command.StatsCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesWatchedCommand;
+import me.christopherdavis.beanstalkc.command.ListTubeUsedCommand;
 
 /**
  * The default implementation of Client.
@@ -313,6 +314,14 @@ public class DefaultClient implements Client
     public List<String> listTubesWatched() throws BeanstalkcException
     {
         return doCommand(new ListTubesWatchedCommand());
+    }
+
+    /**
+     * @see     Client#listTubeUsed
+     */
+    public String listTubeUsed() throws BeanstalkcException
+    {
+        return doCommand(new ListTubeUsedCommand());
     }
 
     private <T> T doCommand(Command<T> cmd) throws BeanstalkcException

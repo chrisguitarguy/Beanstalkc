@@ -337,4 +337,12 @@ public interface Client
      * @return  A list of all tubes watched. Or null on failure.
      */
     public List<String> listTubesWatched() throws BeanstalkcException;
+
+    /**
+     * See what tube the client is currently using.
+     *
+     * @since   0.1
+     * @return  The tube that's being used or null on failure.
+     */
+    public String listTubeUsed() throws BeanstalkcException;
 }

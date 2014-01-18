@@ -22,6 +22,7 @@ public class TubesTest
     public void testUseTube() throws Exception
     {
         Assert.assertTrue(client.use("a_tube"));
+        Assert.assertEquals("a_tube", client.listTubeUsed());
     }
 
     @Test

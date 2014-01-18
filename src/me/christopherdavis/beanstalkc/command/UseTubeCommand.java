@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.io.IOException;
 import me.christopherdavis.beanstalkc.BeanstalkcException;
 import me.christopherdavis.beanstalkc.exception.ServerErrorException;
-import me.christopherdavis.beanstalkc.exception.InvalidValueException;
 
 /**
  * Issue a `use` command
