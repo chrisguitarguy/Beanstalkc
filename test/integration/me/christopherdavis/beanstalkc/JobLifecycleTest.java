@@ -7,17 +7,30 @@ package me.christopherdavis.beanstalkc;
 import java.util.Random;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
 import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
 
 public class JobLifecycleTest
 {
-    private Client client;
+    private static Client client;
     private Random rand;
 
-    public JobLifecycleTest() throws Exception
+    public JobLifecycleTest()
+    {
+        rand = new Random();
+    }
+
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         client = ConnectionHelper.create();
-        rand = new Random();
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        client.close();
     }
 
     @Test

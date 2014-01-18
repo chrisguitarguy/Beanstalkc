@@ -8,16 +8,29 @@ import java.util.Map;
 import java.util.Random;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
 
 public class StatsTest
 {
-    private Client client;
+    private static Client client;
     private Random rand;
 
     public StatsTest() throws Exception
     {
-        client = ConnectionHelper.create();
         rand = new Random();
+    }
+
+    @BeforeClass
+    public static void setUp() throws Exception
+    {
+        client = ConnectionHelper.create();
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        client.close();
     }
 
     @Test

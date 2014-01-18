@@ -7,15 +7,23 @@ package me.christopherdavis.beanstalkc;
 import java.util.List;
 import org.junit.Test;
 import org.junit.Assert;
-import me.christopherdavis.beanstalkc.exception.JobNotFoundException;
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
 
 public class TubesTest
 {
-    private Client client;
+    private static Client client;
 
-    public TubesTest() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         client = ConnectionHelper.create();
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        client.close();
     }
 
     @Test
