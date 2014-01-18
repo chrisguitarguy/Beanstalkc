@@ -326,7 +326,15 @@ public interface Client
      * See what tubes are in existence on the server.
      *
      * @since   0.1
-     * @return  A list of all the tubes available
+     * @return  A list of all the tubes available, or null on failure
      */
     public List<String> listTubes() throws BeanstalkcException;
+
+    /**
+     * See what tubes the client is currently watching.
+     *
+     * @since   0.1
+     * @return  A list of all tubes watched. Or null on failure.
+     */
+    public List<String> listTubesWatched() throws BeanstalkcException;
 }

@@ -33,6 +33,7 @@ import me.christopherdavis.beanstalkc.command.StatsJobCommand;
 import me.christopherdavis.beanstalkc.command.StatsTubeCommand;
 import me.christopherdavis.beanstalkc.command.StatsCommand;
 import me.christopherdavis.beanstalkc.command.ListTubesCommand;
+import me.christopherdavis.beanstalkc.command.ListTubesWatchedCommand;
 
 
 public class DefaultClientTest
@@ -236,6 +237,15 @@ public class DefaultClientTest
         Mockito.when(adapter.perform(Mockito.isA(ListTubesCommand.class))).thenReturn(expected);
 
         Assert.assertSame(expected, client.listTubes());
+    }
+
+    @Test
+    public void testListTubesWatched() throws Exception
+    {
+        final List<String> expected = new ArrayList<String>();
+        Mockito.when(adapter.perform(Mockito.isA(ListTubesWatchedCommand.class))).thenReturn(expected);
+
+        Assert.assertSame(expected, client.listTubesWatched());
     }
 
     @Before

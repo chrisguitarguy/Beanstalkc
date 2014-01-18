@@ -21,21 +21,6 @@ public class JobLifecycleTest
     }
 
     @Test
-    public void testUseTube() throws Exception
-    {
-        Assert.assertTrue(client.use("a_tube"));
-    }
-
-    @Test
-    public void testWatchIgnore() throws Exception
-    {
-        Assert.assertTrue(client.watch("a_tube") > 0);
-        Assert.assertTrue(client.ignore("a_tube") > 0);
-        // seems that beanstalkd doesn't actually return "NOT_IGNORED" ...
-        //Assert.assertTrue(client.ignore("a_tube") < 0);
-    }
-
-    @Test
     public void testPut() throws Exception
     {
         final byte[] body = "a job body".getBytes();
