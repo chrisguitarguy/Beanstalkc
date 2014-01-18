@@ -333,6 +333,10 @@ public class DefaultClient implements Client
      */
     public void close() throws IOException
     {
+        if (isClosed()) {
+            return;
+        }
+
         try {
             doCommand(new QuitCommand());
         } catch (BeanstalkcException e) {

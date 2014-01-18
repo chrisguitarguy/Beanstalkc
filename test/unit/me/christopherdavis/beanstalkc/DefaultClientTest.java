@@ -263,9 +263,10 @@ public class DefaultClientTest
     public void testClose() throws Exception
     {
         Mockito.when(adapter.perform(Mockito.isA(QuitCommand.class))).thenReturn(true);
-        Mockito.when(adapter.isClosed()).thenReturn(false);
+        Mockito.when(adapter.isClosed()).thenReturn(false).thenReturn(true);
 
         client.close();
+        client.close(); // we shouldn't touch close again...
 
         Mockito.verify(adapter, Mockito.times(1)).close();
     }
