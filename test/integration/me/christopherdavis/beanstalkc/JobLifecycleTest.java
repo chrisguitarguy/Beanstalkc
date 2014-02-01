@@ -82,6 +82,8 @@ public class JobLifecycleTest
         Assert.assertEquals(inserted.getId(), fetched.getId());
         Assert.assertTrue(client.bury(fetched));
         Assert.assertTrue(client.kick(10) == 1);
+
+        client.ignore(tube);
     }
 
     @Test(expected=JobNotFoundException.class)
@@ -122,6 +124,8 @@ public class JobLifecycleTest
         client.ignore("default");
 
         Assert.assertNull(client.reserve(1));
+
+        client.ignore(tube);
     }
 
     private String generateTubeName()
