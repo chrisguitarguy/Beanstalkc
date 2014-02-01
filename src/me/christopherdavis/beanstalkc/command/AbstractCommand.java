@@ -147,7 +147,7 @@ abstract class AbstractCommand<T> implements Command<T>
         }
 
         // make sure we actually go the length we expected
-        if (read != length) {
+        if (offset != length) {
             throw new InvalidValueException(String.format(
                 "Expected %d bytes to be read, got %d bytes long",
                 length,
