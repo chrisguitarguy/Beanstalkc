@@ -118,14 +118,12 @@ abstract class AbstractCommand<T> implements Command<T>
     protected byte[] readLength(InputStream in, int length) throws BeanstalkcException, IOException
     {
         int byt = 0;
-        
         byte[] bytes = new byte[length];
-
         int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length &&
-               (numRead = in.read(bytes, offset, bytes.length - offset)) >= 0) {
-          offset += numRead;
+        int read = 0;
+
+        while (offset < bytes.length && (read = in.read(bytes, offset, bytes.length-offset)) >= 0) {
+          offset += read;
         }
 
         if (read < 0) {
