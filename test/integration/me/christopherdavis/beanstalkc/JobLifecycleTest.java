@@ -5,6 +5,7 @@
 package me.christopherdavis.beanstalkc;
 
 import java.util.Random;
+import java.util.Arrays;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -43,6 +44,29 @@ public class JobLifecycleTest
         Assert.assertTrue(j.getId() > 0);
         Assert.assertArrayEquals(body, j.getBody());
     }
+
+    @Test
+    public void testPutWithHugeJobBody() throws Exception
+    {
+        String tube = generateTubeName();
+        byte[] body = new byte[10000];
+        Arrays.fill(body, (byte)'a');
+
+        Job put;
+        Job fetched;
+
+        Assert.assertTrue(client.use(tube));
+        put = client.put(body);
+        Assert.assertTrue(put.getId() > 0);
+
+        Assert.assertTrue(client.watch(tube) > 0);
+        Assert.assertTrue(client.ignore("default") > 0);
+
+        fetched = client.reserve(1);
+        Assert.assertNotNull(fetched);
+        Assert.assertEquals(put.getId(), fetched.getId());
+    }
+
 
     @Test
     public void testLifecycle() throws Exception
