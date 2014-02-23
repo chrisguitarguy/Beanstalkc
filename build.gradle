@@ -36,6 +36,13 @@ test {
     }
 }
 
+jar.manifest.attributes(
+    'Implementation-Title': project.name,
+    'Implementation-Version': project.version,
+    'Build-By': System.getProperty('user.name'),
+    'Build-JDK': System.getProperty('java.version')
+)
+
 task integration(type: Test) {
     onlyIf {
         try {
