@@ -1,6 +1,4 @@
 import java.net.Socket
-import java.io.IOException
-import org.gradle.api.tasks.StopActionException
 
 apply plugin: 'java'
 
@@ -39,19 +37,20 @@ test {
 }
 
 task integration(type: Test) {
+    onlyIf {
+        try {
+            Socket sock = new Socket(beanstalkdHost, Integer.parseInt(beanstalkdPort))
+            sock.close();
+        } catch (Exception e) {
+            return false
+        }
+
+        return true
+    }
+    
     // these are needed to make the test integration suite actually work
     testClassesDir = sourceSets.integration.output.classesDir
     classpath += sourceSets.integration.runtimeClasspath
-
-    // XXX is there a better way to do this?
-    try {
-        Socket sock = new Socket(beanstalkdHost, Integer.parseInt(beanstalkdPort))
-        sock.close();
-    } catch (NumberFormatException e) {
-        throw new StopActionException("Invalid port for beanstalkd");
-    } catch (IOException e) {
-        throw new StopActionException("Could not connect to beanstalkd")
-    }
 
     // set the appropriat environment variables
     systemProperty "BEANSTALKD_HOST", beanstalkdHost
