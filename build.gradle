@@ -61,4 +61,5 @@ task integration(type: Test) {
     reports.html.destination = "$buildDir/reports/integration"
 
     // show some output
-    testLogging.events "passed", "skipped", "failed" }
+    testLogging.events "passed", "skipped", "failed"
+}
