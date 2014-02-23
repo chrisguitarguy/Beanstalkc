@@ -1,7 +1,0 @@
-<ivy-module version="2.0">
-    <info organisation="me.christopherdavis" module="beanstalkc" />
-    <dependencies>
-        <dependency org="junit" name="junit" rev="4.11" />
-        <dependency org="org.mockito" name="mockito-all" rev="1.9.5" />
-    </dependencies>
-</ivy-module>
