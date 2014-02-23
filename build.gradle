@@ -1,3 +1,6 @@
+import java.net.Socket
+import org.gradle.api.tasks.StopActionException
+
 apply plugin: 'java'
 
 group = "org.chrisguitarguy"
@@ -39,6 +42,14 @@ task integration(type: Test) {
     testClassesDir = sourceSets.integration.output.classesDir
     classpath += sourceSets.integration.runtimeClasspath
 
+    // XXX is there a better way to do this?
+    try {
+        Socket sock = new Socket(beanstalkdHost, Integer.parseInt(beanstalkdPort))
+        sock.close();
+    } catch (Exception e) {
+        throw new StopActionException("Could not connect to beanstalkd")
+    }
+
     // set the appropriat environment variables
     systemProperty "BEANSTALKD_HOST", beanstalkdHost
     systemProperty "BEANSTALKD_PORT", beanstalkdPort
@@ -47,5 +58,4 @@ task integration(type: Test) {
     reports.html.destination = "$buildDir/reports/integration"
 
     // show some output
-    testLogging.events "passed", "skipped", "failed"
-}
+    testLogging.events "passed", "skipped", "failed" }
