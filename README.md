@@ -7,10 +7,10 @@ A java [beanstalkd](https://github.com/kr/beanstalkd) client.
 
 ```java
 import java.io.IOException;
-import me.christopherdavis.beanstalkc.Client;
-import me.christopherdavis.beanstalkc.DefaultClient;
-import me.christopherdavis.beanstalkc.Job;
-import me.christopherdavis.beanstalkc.BeanstalkcException;
+import org.chrisguitarguy.beanstalkc.Client;
+import org.chrisguitarguy.beanstalkc.DefaultClient;
+import org.chrisguitarguy.beanstalkc.Job;
+import org.chrisguitarguy.beanstalkc.BeanstalkcException;
 
 public class TestingBeanstalkc
 {

@@ -12,7 +12,7 @@
     <property name="test.dir" location="test" />
     <property name="test.dir.unit" location="${test.dir}/unit" />
     <property name="test.dir.integration" location="${test.dir}/integration" />
-    <property name="version" value="0.1" />
+    <property name="version" value="0.2" />
     <property name="name" value="beanstalkc" />
     <property name="beanstalkd.host" value="localhost" />
     <property name="beanstalkd.port" value="11300" />
