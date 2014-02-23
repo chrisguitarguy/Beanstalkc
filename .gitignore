@@ -2,6 +2,7 @@
 /dist/*
 /lib/*
 /build.properties
+/.gradle/*
 
 # ignore certain files
 *.pyc

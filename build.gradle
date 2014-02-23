@@ -1,0 +1,51 @@
+apply plugin: 'java'
+
+group = "org.chrisguitarguy"
+version = "0.2"
+
+buildDir = "build"
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java.srcDir "src/"
+    }
+    test {
+        java.srcDir "test/unit/"
+    }
+    integration {
+        java.srcDir "test/integration/"
+        compileClasspath += sourceSets.main.output
+    }
+}
+
+dependencies {
+    testCompile "junit:junit:4.11"
+    testCompile "org.mockito:mockito-all:1.9.5"
+    integrationCompile "junit:junit:4.11"
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task integration(type: Test) {
+    // these are needed to make the test integration suite actually work
+    testClassesDir = sourceSets.integration.output.classesDir
+    classpath += sourceSets.integration.runtimeClasspath
+
+    // set the appropriat environment variables
+    systemProperty "BEANSTALKD_HOST", beanstalkdHost
+    systemProperty "BEANSTALKD_PORT", beanstalkdPort
+
+    // change where reports for the integration suite get generated
+    reports.html.destination = "$buildDir/reports/integration"
+
+    // show some output
+    testLogging.events "passed", "skipped", "failed"
+}
