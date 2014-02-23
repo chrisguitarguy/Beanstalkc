@@ -1,4 +1,5 @@
 import java.net.Socket
+import java.io.IOException
 import org.gradle.api.tasks.StopActionException
 
 apply plugin: 'java'
@@ -46,7 +47,9 @@ task integration(type: Test) {
     try {
         Socket sock = new Socket(beanstalkdHost, Integer.parseInt(beanstalkdPort))
         sock.close();
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
+        throw new StopActionException("Invalid port for beanstalkd");
+    } catch (IOException e) {
         throw new StopActionException("Could not connect to beanstalkd")
     }
 
