@@ -3,11 +3,11 @@
 
 package org.chrisguitarguy.beanstalkc;
 
-import java.util.Map;
+import java.util.Properties;
 
 class ConnectionHelper
 {
-    private static Map<String, String> env = System.getenv();
+    private static Properties env = System.getProperties();
     private static String host = null;
     private static Integer port = null;
 
@@ -26,7 +26,7 @@ class ConnectionHelper
             throw new Exception("BEANSTALKD_PORT not set");
         }
 
-        port = Integer.parseInt(env.get("BEANSTALKD_PORT"));
+        port = Integer.parseInt((String)env.get("BEANSTALKD_PORT"));
 
         return port;
     }
@@ -41,7 +41,7 @@ class ConnectionHelper
             throw new Exception("BEANSTALKD_HOST not set");
         }
 
-        host = env.get("BEANSTALKD_HOST");
+        host = (String)env.get("BEANSTALKD_HOST");
 
         return host;
     }
