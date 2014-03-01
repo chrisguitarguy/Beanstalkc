@@ -1,6 +1,8 @@
 Beanstalkc
 ==========
 
+[![Build Status](https://travis-ci.org/chrisguitarguy/Beanstalkc.png?branch=master)](https://travis-ci.org/chrisguitarguy/Beanstalkc)
+
 A java [beanstalkd](https://github.com/kr/beanstalkd) client.
 
 #### Example:
