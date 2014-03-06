@@ -45,10 +45,16 @@ public class SocketAdapter implements Adapter
         }
     }
 
-    public void close() throws IOException
+    public void close() throws BeanstalkcException
     {
-        if (!sock.isClosed()) {
+        if (sock.isClosed()) {
+            return;
+        }
+
+        try {
             sock.close();
+        } catch (IOException e) {
+            throw new ConnectionException(e.getMessage(), e);
         }
     }
 

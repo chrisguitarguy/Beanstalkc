@@ -5,7 +5,6 @@ package org.chrisguitarguy.beanstalkc;
 
 import java.util.Map;
 import java.util.List;
-import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -15,7 +14,7 @@ import java.io.IOException;
  * @since   0.1
  * @author  Christopher Davis <http://christopherdavis.em>
  */
-public interface Client extends Closeable
+public interface Client extends AutoCloseable
 {
     /**
      * Put a new job into the queue.
@@ -346,14 +345,6 @@ public interface Client extends Closeable
      * @return  The tube that's being used or null on failure.
      */
     public String listTubeUsed() throws BeanstalkcException;
-
-    /**
-     * Send a quit command to the server an ensure that all connections
-     * are closed.
-     *
-     * @since   0.1
-     */
-    public void close() throws IOException;
 
     /**
      * Check to see whether the client is closed for business.

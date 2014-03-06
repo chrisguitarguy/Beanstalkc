@@ -5,7 +5,6 @@ package org.chrisguitarguy.beanstalkc;
 
 import java.util.Map;
 import java.util.List;
-import java.io.IOException;
 import org.chrisguitarguy.beanstalkc.adapter.SocketAdapter;
 import org.chrisguitarguy.beanstalkc.command.PutJobCommand;
 import org.chrisguitarguy.beanstalkc.command.UseTubeCommand;
@@ -341,17 +340,13 @@ public class DefaultClient implements Client
     /**
      * @see     Client#close
      */
-    public void close() throws IOException
+    public void close() throws BeanstalkcException
     {
         if (isClosed()) {
             return;
         }
 
-        try {
-            doCommand(new QuitCommand());
-        } catch (BeanstalkcException e) {
-            throw new IOException("Could not close the server", e);
-        }
+        doCommand(new QuitCommand());
 
         if (!adapter.isClosed()) {
             adapter.close();
