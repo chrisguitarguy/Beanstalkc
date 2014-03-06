@@ -31,6 +31,6 @@ public class TryWithResourceTest
 
     private String generateTubeName()
     {
-        return String.format("peektest_tube_%d", rand.nextInt(10000));
+        return String.format("tryresource_%d", rand.nextInt(10000));
     }
 }
