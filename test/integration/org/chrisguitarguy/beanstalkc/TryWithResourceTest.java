@@ -26,8 +26,6 @@ public class TryWithResourceTest
         try (Client c = ConnectionHelper.create()) {
             c.use(tube);
             Job inserted = c.put("some job".getBytes());
-        } catch (BeanstalkcException e) {
-            // noop
         }
     }
 
